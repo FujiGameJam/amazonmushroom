@@ -381,20 +381,6 @@
    <File path="src\camera\camera.d" />
   </Folder>
   <Folder name="entity" />
-  <Folder name="states">
-   <File path="src\states\loadingscreenstate.d" />
-  </Folder>
-  <Folder name="thinkers">
-   <File path="src\thinkers\localplayer.d" />
-   <File path="src\thinkers\nullthinker.d" />
-  </Folder>
-  <Folder name="interfaces">
-   <File path="src\interfaces\collider.d" />
-   <File path="src\interfaces\entity.d" />
-   <File path="src\interfaces\renderable.d" />
-   <File path="src\interfaces\statemachine.d" />
-   <File path="src\interfaces\thinker.d" />
-  </Folder>
   <Folder name="fuji">
    <Folder name="asset">
     <File path="..\fuji\dist\include\d2\fuji\asset\intmodel.d" />
@@ -449,6 +435,21 @@
    <File path="..\fuji\dist\include\d2\fuji\vector.d" />
    <File path="..\fuji\dist\include\d2\fuji\vertex.d" />
    <File path="..\fuji\dist\include\d2\fuji\view.d" />
+  </Folder>
+  <Folder name="interfaces">
+   <File path="src\interfaces\collider.d" />
+   <File path="src\interfaces\entity.d" />
+   <File path="src\interfaces\renderable.d" />
+   <File path="src\interfaces\statemachine.d" />
+   <File path="src\interfaces\thinker.d" />
+  </Folder>
+  <Folder name="states">
+   <File path="src\states\ingamestate.d" />
+   <File path="src\states\loadingscreenstate.d" />
+  </Folder>
+  <Folder name="thinkers">
+   <File path="src\thinkers\localplayer.d" />
+   <File path="src\thinkers\nullthinker.d" />
   </Folder>
   <File path="src\game.d" />
   <File path="src\winmain.d" />
