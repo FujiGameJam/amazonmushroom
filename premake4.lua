@@ -1,6 +1,6 @@
-solution "AmazonRobot"
+solution "AmazonRobots"
 	configurations { "Debug", "DebugOpt", "Release", "Retail" }
-	platforms { "Native" }
+	platforms { "x64" }
 
 	-- include the fuji project...
 	dofile  "../fuji/Fuji/Project/fujiproj.lua"
@@ -8,7 +8,7 @@ solution "AmazonRobot"
 	-- include the Haku project...
 	dofile "../fuji/Haku/Project/hakuproj.lua"
 
-	project "AmazonRobot"
+	project "AmazonRobots"
 		kind "WindowedApp"
 		language "C++"
 		files { "src/**.h", "src/**.cpp" }
