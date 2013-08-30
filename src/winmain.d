@@ -12,8 +12,10 @@ import fuji.display;
 import fuji.filesystem;
 import fuji.fs.native;
 
-/**** Globals ****/
+import game;
 
+/**** Globals ****/
+/*
 MFSystemCallbackFunction pInitFujiFS = null;
 
 MFRenderer *pRenderer = null;
@@ -100,21 +102,22 @@ void Game_Deinit()
 	MFModel_Destroy(pModel);
 
 	MFRenderer_Destroy(pRenderer);
-}
+}*/
 
 int GameMain(ref MFInitParams initParams)
 {
 //	MFRand_Seed(cast(uint)(MFSystem_ReadRTC() & 0xFFFFFFFF));
 
-	MFSystem_RegisterSystemCallback(MFCallback.InitDone, &Game_Init);
-	MFSystem_RegisterSystemCallback(MFCallback.Update, &Game_Update);
-	MFSystem_RegisterSystemCallback(MFCallback.Draw, &Game_Draw);
-	MFSystem_RegisterSystemCallback(MFCallback.Deinit, &Game_Deinit);
+	MFSystem_RegisterSystemCallback(MFCallback.InitDone, &Game.Static_Init);
+	MFSystem_RegisterSystemCallback(MFCallback.Update, &Game.Static_Update);
+	MFSystem_RegisterSystemCallback(MFCallback.Draw, &Game.Static_Draw);
+	MFSystem_RegisterSystemCallback(MFCallback.Deinit, &Game.Static_Deinit);
 
-	pInitFujiFS = MFSystem_RegisterSystemCallback(MFCallback.FileSystemInit, &Game_InitFilesystem);
+	Game.Instance.pInitFujiFS = MFSystem_RegisterSystemCallback(MFCallback.FileSystemInit, &Game.Static_InitFileSystem);
 
 	return MFMain(initParams);
 }
+
 
 extern (Windows)
 int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
