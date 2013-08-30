@@ -383,6 +383,10 @@
   <Folder name="entity">
    <File path="src\entity\throbbingrobot.d" />
   </Folder>
+  <Folder name="util">
+   <File path="src\util\event.d" />
+   <File path="src\util\eventtypes.d" />
+  </Folder>
   <Folder name="fuji">
    <Folder name="asset">
     <File path="..\fuji\dist\include\d2\fuji\asset\intmodel.d" />
