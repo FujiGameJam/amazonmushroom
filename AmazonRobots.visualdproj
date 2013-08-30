@@ -271,7 +271,7 @@
   <cv2pdbOptions />
   <objfiles />
   <linkswitches />
-  <libfiles />
+  <libfiles>user32.lib Gdi32.lib Ole32.lib oleaut32.lib</libfiles>
   <libpaths />
   <deffile />
   <resfile />
@@ -377,6 +377,61 @@
   <filesToClean>*.obj;*.cmd;*.build;*.json;*.dep</filesToClean>
  </Config>
  <Folder name="AmazonRobots">
+  <Folder name="fuji">
+   <Folder name="asset">
+    <File path="..\fuji\dist\include\d2\fuji\asset\intmodel.d" />
+    <File path="..\fuji\dist\include\d2\fuji\asset\intsound.d" />
+    <File path="..\fuji\dist\include\d2\fuji\asset\intstringtable.d" />
+    <File path="..\fuji\dist\include\d2\fuji\asset\inttexture.d" />
+   </Folder>
+   <Folder name="fs">
+    <File path="..\fuji\dist\include\d2\fuji\fs\cached.d" />
+    <File path="..\fuji\dist\include\d2\fuji\fs\http.d" />
+    <File path="..\fuji\dist\include\d2\fuji\fs\memory.d" />
+    <File path="..\fuji\dist\include\d2\fuji\fs\native.d" />
+    <File path="..\fuji\dist\include\d2\fuji\fs\zip.d" />
+   </Folder>
+   <Folder name="materials">
+    <File path="..\fuji\dist\include\d2\fuji\materials\standard.d" />
+   </Folder>
+   <File path="..\fuji\dist\include\d2\fuji\animation.d" />
+   <File path="..\fuji\dist\include\d2\fuji\animscript.d" />
+   <File path="..\fuji\dist\include\d2\fuji\auxiliarydisplay.d" />
+   <File path="..\fuji\dist\include\d2\fuji\boundingvolume.d" />
+   <File path="..\fuji\dist\include\d2\fuji\callstack.d" />
+   <File path="..\fuji\dist\include\d2\fuji\collision.d" />
+   <File path="..\fuji\dist\include\d2\fuji\commandline.d" />
+   <File path="..\fuji\dist\include\d2\fuji\compute.d" />
+   <File path="..\fuji\dist\include\d2\fuji\dbg.d" />
+   <File path="..\fuji\dist\include\d2\fuji\display.d" />
+   <File path="..\fuji\dist\include\d2\fuji\driver.d" />
+   <File path="..\fuji\dist\include\d2\fuji\filesystem.d" />
+   <File path="..\fuji\dist\include\d2\fuji\font.d" />
+   <File path="..\fuji\dist\include\d2\fuji\fuji.d" />
+   <File path="..\fuji\dist\include\d2\fuji\heap.d" />
+   <File path="..\fuji\dist\include\d2\fuji\image.d" />
+   <File path="..\fuji\dist\include\d2\fuji\input.d" />
+   <File path="..\fuji\dist\include\d2\fuji\material.d" />
+   <File path="..\fuji\dist\include\d2\fuji\matrix.d" />
+   <File path="..\fuji\dist\include\d2\fuji\model.d" />
+   <File path="..\fuji\dist\include\d2\fuji\modules.d" />
+   <File path="..\fuji\dist\include\d2\fuji\network.d" />
+   <File path="..\fuji\dist\include\d2\fuji\particlesystem.d" />
+   <File path="..\fuji\dist\include\d2\fuji\primitive.d" />
+   <File path="..\fuji\dist\include\d2\fuji\quaternion.d" />
+   <File path="..\fuji\dist\include\d2\fuji\render.d" />
+   <File path="..\fuji\dist\include\d2\fuji\renderstate.d" />
+   <File path="..\fuji\dist\include\d2\fuji\resource.d" />
+   <File path="..\fuji\dist\include\d2\fuji\sockets.d" />
+   <File path="..\fuji\dist\include\d2\fuji\sound.d" />
+   <File path="..\fuji\dist\include\d2\fuji\system.d" />
+   <File path="..\fuji\dist\include\d2\fuji\texture.d" />
+   <File path="..\fuji\dist\include\d2\fuji\translation.d" />
+   <File path="..\fuji\dist\include\d2\fuji\types.d" />
+   <File path="..\fuji\dist\include\d2\fuji\vector.d" />
+   <File path="..\fuji\dist\include\d2\fuji\vertex.d" />
+   <File path="..\fuji\dist\include\d2\fuji\view.d" />
+  </Folder>
   <File path="src\winmain.d" />
  </Folder>
 </DProject>

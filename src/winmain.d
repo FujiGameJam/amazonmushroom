@@ -59,7 +59,7 @@ void Game_Update()
 	// calculate a spinning world matrix
 	MFMatrix world;
 //	world.SetTranslation(MFVector(0, -5, 50));
-    world.t = MFVector(0, -5, 50, 1);
+    world.m[12..16] = [0, -5, 50, 1];
 
 //	static float rotation = 0.0f;
 //	rotation += MFSystem_TimeDelta();
