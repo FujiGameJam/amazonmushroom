@@ -7,6 +7,10 @@ import interfaces.collider;
 
 import camera.camera;
 
+import fuji.model;
+import fuji.render;
+import fuji.view;
+
 class ThrobbingRobot : ISheeple, IEntity, IRenderable, ICollider
 {
 	struct ObjectState
@@ -23,6 +27,8 @@ class ThrobbingRobot : ISheeple, IEntity, IRenderable, ICollider
 
 	private CollisionManager	collision = null;
 
+	private MFModel*			pModel;
+
 	@property Camera TrailingCamera()		{ return camera; }
 
 	///ISheeple
@@ -38,6 +44,7 @@ class ThrobbingRobot : ISheeple, IEntity, IRenderable, ICollider
 	///IEntity
 	override void OnCreate(ElementParser element)
 	{
+		pModel = MFModel_Create("astro");
 	}
 
 	override void OnResolve(IEntity[string] loadedEntities)
@@ -52,16 +59,19 @@ class ThrobbingRobot : ISheeple, IEntity, IRenderable, ICollider
 	
 	override void OnDestroy()
 	{
+		MFModel_Destroy(pModel);
 	}
 
 	// Do movement and other type logic in this one
 	override void OnUpdate()
 	{
+		UpdateCamera();
 	}
 
 	// Need to resolve post-movement collisions, such as punching someone? Here's the place to do it.
 	override void OnPostUpdate()
 	{
+		MFModel_SetWorldMatrix(pModel, currentState.transform);
 	}
 
 	override @property bool CanUpdate()					{ return true; }
@@ -72,6 +82,7 @@ class ThrobbingRobot : ISheeple, IEntity, IRenderable, ICollider
 	///IRenderable
 	override void OnRenderWorld()
 	{
+		MFRenderer_AddModel(pModel, null, MFView_GetViewState());
 	}
 
 	override void OnRenderGUI(MFRect orthoRect)
@@ -99,6 +110,6 @@ class ThrobbingRobot : ISheeple, IEntity, IRenderable, ICollider
 	// Robot specific stuff
 	void UpdateCamera()
 	{
-		camera.Position = currentState.transform.t + MFVector(0.0, 0.5, -1.5);
+		camera.Position = MFVector(0.0, 0.5, -100.5);
 	}
 }

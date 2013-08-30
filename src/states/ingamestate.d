@@ -49,6 +49,7 @@ class InGameState : IState, IRenderable
 
 	void OnUpdate()
 	{
+		thinkEvent();
 		updateEvent();
 		collision.OnUpdate();
 		postUpdateEvent();
