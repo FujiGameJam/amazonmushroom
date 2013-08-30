@@ -1,5 +1,5 @@
 <DProject>
- <ProjectGuid>{1CD804B2-FE75-46E0-B315-64FED033E11D}</ProjectGuid>
+ <ProjectGuid>{8CE67C91-B8FF-4ED1-896B-E915C078D5B6}</ProjectGuid>
  <Config name="Debug" platform="Win32">
   <obj>0</obj>
   <link>0</link>
@@ -376,7 +376,7 @@
   <postBuildCommand />
   <filesToClean>*.obj;*.cmd;*.build;*.json;*.dep</filesToClean>
  </Config>
- <Folder name="AmazonRobot">
+ <Folder name="AmazonRobots">
   <File path="src\winmain.d" />
  </Folder>
 </DProject>

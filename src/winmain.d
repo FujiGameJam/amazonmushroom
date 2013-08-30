@@ -2,6 +2,7 @@ module winmain;
 
 import core.runtime;
 import core.sys.windows.windows;
+import std.stdio;
 
 extern (Windows)
 int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
@@ -32,7 +33,6 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
 
 int myWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
-    /* ... insert user code here ... */
-    throw new Exception("not implemented");
+    printf("Hello world!");
     return 0;
 }
