@@ -12,11 +12,13 @@ enum CollisionType
 	Box,
 }
 
-enum CollisionClass // Hack-ish
+// Still kinda hacky
+enum CollisionClass
 {
-	None = 0,
-	Combatant = 1 << 0,
-	Stache = 1 << 1,
+	None		= 0x0,
+	Robot		= 0x1,
+	Mushroom	= 0x2,
+	Obstacle	= 0x4,
 }
 
 interface ICollider

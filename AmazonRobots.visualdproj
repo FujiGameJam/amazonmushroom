@@ -380,7 +380,9 @@
   <Folder name="camera">
    <File path="src\camera\camera.d" />
   </Folder>
-  <Folder name="entity" />
+  <Folder name="entity">
+   <File path="src\entity\throbbingrobot.d" />
+  </Folder>
   <Folder name="fuji">
    <Folder name="asset">
     <File path="..\fuji\dist\include\d2\fuji\asset\intmodel.d" />
