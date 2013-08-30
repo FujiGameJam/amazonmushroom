@@ -14,6 +14,7 @@ import fuji.matrix;
 import interfaces.statemachine;
 
 import states.loadingscreenstate;
+import states.ingamestate;
 
 class Game
 {
@@ -57,6 +58,7 @@ class Game
 		MFRenderer_SetRenderLayerSet(pRenderer, &layerSet);
 
 		state.AddState("LoadingScreen", new LoadingScreenState());
+		state.AddState("InGame", new InGameState());
 		state.SwitchState("LoadingScreen");
 	}
 

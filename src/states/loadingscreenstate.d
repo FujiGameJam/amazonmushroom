@@ -51,7 +51,7 @@ class LoadingScreenState : IState, IRenderable
 
 		if (elapsedTime > 2.2)
 		{
-			owner.SwitchState("ingame");
+			owner.SwitchState("InGame");
 		}
 	}
 
@@ -99,7 +99,6 @@ class LoadingScreenState : IState, IRenderable
 
 	void OnRenderGUI(MFRect orthoRect)
 	{
-		MFFont_DrawText2f(chinese, orthoRect.width * 0.5 - halfMessageWidth, 600, messageHeight, MFVector.black, message);
 		MFFont_DrawText2f(chinese, orthoRect.width * 0.5 - halfMessageWidth - 1, 600, messageHeight, MFVector.white, message);
 	}
 
