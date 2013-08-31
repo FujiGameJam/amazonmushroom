@@ -43,7 +43,7 @@ class Mushroom : IEntity, IRenderable, ICollider
 	///IEntity
 	override void OnCreate(ElementParser element)
 	{
-		pModel = MFModel_Create("astro");
+		pModel = MFModel_Create("mushroom.x");
 
 		initialState.transform.t.x = uniform(0.0, 8.0);
 		initialState.transform.t.z = uniform(0.0, 8.0);
@@ -108,6 +108,11 @@ class Mushroom : IEntity, IRenderable, ICollider
 		collision = owner;
 	}
 
+	override bool OnCollision(ICollider other)
+	{
+		return true;
+	}
+
 	override @property MFVector CollisionPosition()					{ return currentState.transform.t; }
 	override @property MFVector CollisionPosition(MFVector pos)		{ currentState.transform.t = pos; return pos; }
 
@@ -124,5 +129,5 @@ class Mushroom : IEntity, IRenderable, ICollider
 	enum WalkSpeed = 4.0;
 	enum RunSpeed = 11.0;
 
-	enum ModelScale = 1.0 / 40.0; // To convert the model to meters, and then halve it
+	enum ModelScale = 1.0 / 1.0; // To convert the model to meters, and then halve it
 }

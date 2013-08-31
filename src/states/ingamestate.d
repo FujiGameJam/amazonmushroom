@@ -84,6 +84,9 @@ class InGameState : IState, IRenderable
 
 			MFView_Push();
 			{
+				MFView_SetAspectRatio(1);
+				MFView_SetProjection();
+
 				robot.TrailingCamera.Apply();
 
 				renderWorldEvent();
