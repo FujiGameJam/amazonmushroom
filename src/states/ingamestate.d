@@ -38,6 +38,7 @@ class InGameState : IState, IRenderable
 	void OnEnter()
 	{
 		collision = new CollisionManager;
+		collision.PlaneDimensions = MFVector(32.0, 10.0, 32.0);
 
 		ThrobbingRobot robot = CreateEntity!ThrobbingRobot();
 		// IEntity robot = CreateEntity("ThrobbingRobot");
