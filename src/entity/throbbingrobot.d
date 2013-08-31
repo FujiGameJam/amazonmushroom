@@ -49,7 +49,7 @@ class ThrobbingRobot : ISheeple, IEntity, IRenderable, ICollider
 		float time = 0;
 		float tempo = 1;
 		float prestige = 1;
-		float spin = 0;
+		float spin = 0.2;
 		float sway = 100;
 		float sheer = 0;
 		float warp = 0;
@@ -57,6 +57,11 @@ class ThrobbingRobot : ISheeple, IEntity, IRenderable, ICollider
 	}
 
 	Psych psych;
+
+	struct Toxicity
+	{
+		
+	}
 
 	void RenderViewport(size_t i)
 	{
@@ -99,6 +104,15 @@ class ThrobbingRobot : ISheeple, IEntity, IRenderable, ICollider
 		uv[2] = (vp[2] - _min) / mag;
 		uv[3] = (vp[3] - _min) / mag;
 
+		float rot = psych.spin * sin(psych.time);
+		MFMatrix rm;
+		rm.x = MFVector(cos(rot), sin(rot), 0, 0);
+		rm.y = MFVector(-sin(rot), cos(rot), 0, 0);
+		vp[0] = rm.mul(vp[0] - pos) + pos;
+		vp[1] = rm.mul(vp[1] - pos) + pos;
+		vp[2] = rm.mul(vp[2] - pos) + pos;
+		vp[3] = rm.mul(vp[3] - pos) + pos;
+
 		MFMaterial_SetMaterial(Renderer.Instance.GetPlayerRT(i));
 		MFPrimitive(PrimType.TriStrip, 0);
 		MFBegin(4);
@@ -131,7 +145,7 @@ class ThrobbingRobot : ISheeple, IEntity, IRenderable, ICollider
 	override void OnMove(MFVector direction)
 	{
 		if(direction != MFVector.zero)
-			facingDirection = direction;
+			facingDirection = direction.normalise();
 		moveDirection = direction;
 	}
 
