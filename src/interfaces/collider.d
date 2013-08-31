@@ -135,7 +135,6 @@ class CollisionManager
 
 			collider.CollisionPosition = pos;
 		}
-
 	}
 
 	void AddCollider(ICollider collider)

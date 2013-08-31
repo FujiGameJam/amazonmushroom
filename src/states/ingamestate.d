@@ -40,7 +40,7 @@ class InGameState : IState, IRenderable
 	void OnEnter()
 	{
 		collision = new CollisionManager;
-		collision.PlaneDimensions = MFVector(32.0, 10.0, 32.0);
+		collision.PlaneDimensions = Arena.bounds;
 
 		ThrobbingRobot robot = CreateEntity!ThrobbingRobot();
 		ThrobbingRobot robot2 = CreateEntity!ThrobbingRobot();
