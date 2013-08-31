@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{002A2DE9-8BB6-484D-9802-7E4AD4084715}") = "AmazonRobots", "AmazonRobots.visualdproj", "{8CE67C91-B8FF-4ED1-896B-E915C078D5B6}"
 	ProjectSection(ProjectDependencies) = postProject
 		{9157857D-8D64-D34F-BA0D-6C9AAD0ECF84} = {9157857D-8D64-D34F-BA0D-6C9AAD0ECF84}

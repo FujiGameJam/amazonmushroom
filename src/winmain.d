@@ -14,6 +14,10 @@ import fuji.fs.native;
 
 import game;
 
+extern (C) void _CrtDbgReportW()
+{
+}
+
 /**** Globals ****/
 /*
 MFSystemCallbackFunction pInitFujiFS = null;

@@ -12,6 +12,7 @@ import fuji.render;
 import fuji.view;
 import fuji.primitive;
 import fuji.vector;
+import fuji.renderstate;
 
 class Arena : IEntity, IRenderable
 {
@@ -23,14 +24,15 @@ class Arena : IEntity, IRenderable
 	private ObjectState			currentState,
 								initialState;
 	
-	static MFVector bounds = MFVector(32.0, 10.0, 32.0);
+	static MFVector bounds = MFVector(64.0, 10.0, 64.0);
 
-//	private MFModel*			pModel;
+
+	private MFModel*			pModel;
 
 	///IEntity
 	override void OnCreate(ElementParser element)
 	{
-//		pModel = MFModel_Create("astro");
+		pModel = MFModel_Create("ground");
 	}
 
 	override void OnResolve(IEntity[string] loadedEntities)
@@ -45,7 +47,7 @@ class Arena : IEntity, IRenderable
 	
 	override void OnDestroy()
 	{
-//		MFModel_Destroy(pModel);
+		MFModel_Destroy(pModel);
 	}
 
 	// Do movement and other type logic in this one
@@ -57,7 +59,7 @@ class Arena : IEntity, IRenderable
 	// Need to resolve post-movement collisions, such as punching someone? Here's the place to do it.
 	override void OnPostUpdate()
 	{
-//		MFModel_SetWorldMatrix(pModel, currentState.transform);
+		MFModel_SetWorldMatrix(pModel, currentState.transform);
 	}
 
 	override @property bool CanUpdate()					{ return true; }
@@ -70,18 +72,18 @@ class Arena : IEntity, IRenderable
 	{
 		auto min = MFVector(0, 0, 0);
 		auto max = bounds;
+		//
+		//MFPrimitive(PrimType.TriStrip);
+		//MFBegin(4);
+		//
+		//MFSetPosition(min.x, min.y, max.z);
+		//MFSetPosition(max.x, min.y, max.z);
+		//MFSetPosition(min.x, min.y, min.z);
+		//MFSetPosition(max.x, min.y, min.z);
+		//
+		//MFEnd();
 
-		MFPrimitive(PrimType.TriStrip);
-		MFBegin(4);
-
-		MFSetPosition(min.x, min.y, max.z);
-		MFSetPosition(max.x, min.y, max.z);
-		MFSetPosition(min.x, min.y, min.z);
-		MFSetPosition(max.x, min.y, min.z);
-
-		MFEnd();
-
-//		MFRenderer_AddModel(pModel, null, MFView_GetViewState());
+		MFRenderer_AddModel(pModel, null, MFView_GetViewState());
 	}
 
 	override void OnRenderGUI(MFRect orthoRect)

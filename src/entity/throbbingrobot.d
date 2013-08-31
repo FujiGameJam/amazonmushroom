@@ -163,7 +163,7 @@ class ThrobbingRobot : ISheeple, IEntity, IRenderable, ICollider
 	{
 		MFMatrix transform;
 
-		transform.t = currentState.transform.t + MFVector(1.5, 2.5, -5.5);
+		transform.t = currentState.transform.t + MFVector(0, 5.0, -5.0);
 
 		transform.z = normalise( currentState.transform.t - transform.t );
 		transform.x = cross3( MFVector(0, 1, 0), transform.z );

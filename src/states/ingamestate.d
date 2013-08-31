@@ -22,6 +22,7 @@ import fuji.matrix;
 import fuji.system;
 import fuji.font;
 import fuji.sound;
+import fuji.renderstate;
 
 import entity.throbbingrobot;
 import entity.mushroom;
@@ -78,9 +79,9 @@ class InGameState : IState, IRenderable
 
 	void RenderPlayers()
 	{
-		foreach(i, robot; robots)
+		foreach(index, robot; robots)
 		{
-			Renderer.Instance.SetPlayerLayer(i);
+			Renderer.Instance.SetPlayerLayer(index);
 
 			MFView_Push();
 			{
@@ -89,7 +90,16 @@ class InGameState : IState, IRenderable
 
 				robot.TrailingCamera.Apply();
 
-				renderWorldEvent();
+				foreach(i; 0..3)
+				{
+					foreach(j; 0..3)
+					{
+						MFVector offset = MFVector((i - 1) * arena.bounds.x, 0, (j - 1) * arena.bounds.z);
+						robot.TrailingCamera.Apply(offset);
+
+						renderWorldEvent();
+					}
+				}
 			}
 			MFView_Pop();
 		}
