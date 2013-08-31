@@ -16,6 +16,8 @@ import interfaces.statemachine;
 import states.loadingscreenstate;
 import states.ingamestate;
 
+import renderer;
+
 class Game
 {
 	MFSystemCallbackFunction pInitFujiFS = null;
@@ -44,9 +46,11 @@ class Game
 
 	void Init()
 	{
+		Renderer.Instance();
+/*
 		// create the renderer with a single layer that clears before rendering
-		MFRenderLayerDescription[] layers = [ MFRenderLayerDescription("Scene".ptr) ];
-		pRenderer = MFRenderer_Create(layers.ptr, 1, null, null);
+		MFRenderLayerDescription[] layers = [ MFRenderLayerDescription("Background".ptr), MFRenderLayerDescription("Player1".ptr), MFRenderLayerDescription("Player2".ptr), MFRenderLayerDescription("Player3".ptr), MFRenderLayerDescription("Player4".ptr), MFRenderLayerDescription("Composite".ptr), MFRenderLayerDescription("UI".ptr) ];
+		pRenderer = MFRenderer_Create(layers.ptr, cast(int)layers.length, null, null);
 		MFRenderer_SetCurrent(pRenderer);
 
 		MFRenderLayer *pLayer = MFRenderer_GetLayer(pRenderer, 0);
@@ -56,7 +60,7 @@ class Game
 		MFRenderLayerSet layerSet;
 		layerSet.pSolidLayer = pLayer;
 		MFRenderer_SetRenderLayerSet(pRenderer, &layerSet);
-
+*/
 		state.AddState("LoadingScreen", new LoadingScreenState());
 		state.AddState("InGame", new InGameState());
 		state.SwitchState("LoadingScreen");
@@ -64,7 +68,7 @@ class Game
 
 	void Deinit()
 	{
-		MFRenderer_Destroy(pRenderer);
+//		MFRenderer_Destroy(pRenderer);
 	}
 
 	void Update()

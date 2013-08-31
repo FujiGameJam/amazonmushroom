@@ -4,6 +4,7 @@ import interfaces.statemachine;
 import interfaces.renderable;
 
 import game;
+import renderer;
 
 import fuji.render;
 import fuji.material;
@@ -106,14 +107,15 @@ class LoadingScreenState : IState, IRenderable
 	@property bool CanRenderGUI() { return true; }
 
 
-	private StateMachine owner;
+private:
+	StateMachine owner;
 
-	private MFMaterial* mattDamon;
-	private float elapsedTime;
-	private MFFont* chinese;
-	private MFSound* dattMamon;
+	MFMaterial* mattDamon;
+	float elapsedTime;
+	MFFont* chinese;
+	MFSound* dattMamon;
 
-	private float halfMessageWidth;
+	float halfMessageWidth;
 
 	const(char*) message = "Powered by MATT DAMON!";
 	const(float) messageHeight = 45;
