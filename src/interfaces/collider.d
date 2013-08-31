@@ -25,7 +25,8 @@ interface ICollider
 {
 	void OnAddCollision(CollisionManager owner);
 
-	void OnCollision(ICollider other);
+	// return false for the collision manager to not act on it
+	bool OnCollision(ICollider other);
 
 	@property MFVector CollisionPosition();
 	@property MFVector CollisionPosition(MFVector pos);
@@ -117,8 +118,12 @@ class CollisionManager
 
 				if (result.bCollide)
 				{
-					sourceCollider.CollisionPosition = sourcePos + result.normal * (result.depth * 0.5);
-					targetCollider.CollisionPosition = targetPos + result.normal * (result.depth * -0.5);
+					// check if we want to collide
+					if (sourceCollider.OnCollision(target) && target.OnCollision(sourceCollider))
+					{
+						sourceCollider.CollisionPosition = sourcePos + result.normal * (result.depth * 0.5);
+						targetCollider.CollisionPosition = targetPos + result.normal * (result.depth * -0.5);
+					}
 				}
 			}
 		}
