@@ -137,6 +137,7 @@ class ThrobbingRobot : ISheeple, IEntity, IRenderable, ICollider
 			break;
 		case CollisionClass.Robot:
 			break;
+		default:
 		}
 	}
 
