@@ -119,7 +119,7 @@ class CollisionManager
 				if (result.bCollide)
 				{
 					// check if we want to collide
-					if (sourceCollider.OnCollision(target) && target.OnCollision(sourceCollider))
+					if (sourceCollider.OnCollision(targetCollider) && targetCollider.OnCollision(sourceCollider))
 					{
 						sourceCollider.CollisionPosition = sourcePos + result.normal * (result.depth * 0.5);
 						targetCollider.CollisionPosition = targetPos + result.normal * (result.depth * -0.5);
