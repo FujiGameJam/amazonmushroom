@@ -22,6 +22,7 @@ class LocalPlayer : IThinker
 		Left,
 		Right,
 
+		// TODO: Replace these with whatever's needed
 		Light,
 		Heavy,
 		Special,
@@ -79,12 +80,7 @@ class LocalPlayer : IThinker
 
 	void OnThink()
 	{
-		bool	moving = false,
-				lightAttacking = false,
-				heavyAttacking = false,
-				specialAttacking = false,
-				blocking = false,
-				unblocking = false;
+		bool	moving = false;
 
 		MFVector direction;
 
@@ -98,28 +94,6 @@ class LocalPlayer : IThinker
 				moving = true;
 			}
 
-			if (sheeple.CanAttack)
-			{
-				if (MFInput_WasPressed(MFGamepadButton.X3_A, MFInputDevice.Gamepad, joypadDeviceID))
-					lightAttacking = true;
-				else if (MFInput_WasPressed(MFGamepadButton.X3_B, MFInputDevice.Gamepad, joypadDeviceID))
-					heavyAttacking = true;
-				else if (MFInput_WasPressed(MFGamepadButton.X3_Y, MFInputDevice.Gamepad, joypadDeviceID))
-					specialAttacking = true;
-			}
-
-			if (sheeple.CanBlock)
-			{
-				if (MFInput_WasPressed(MFGamepadButton.X3_X, MFInputDevice.Gamepad, joypadDeviceID))
-				{
-					blocking = true;
-				}
-				else if (MFInput_WasReleased(MFGamepadButton.X3_X, MFInputDevice.Gamepad, joypadDeviceID)
-					|| sheeple.IsBlocking && MFInput_Read(MFGamepadButton.X3_X, MFInputDevice.Gamepad, joypadDeviceID, null) <= 0.0)
-				{
-					unblocking = true;
-				}
-			}
 		}
 
 		// Keyboard input
@@ -141,43 +115,11 @@ class LocalPlayer : IThinker
 				moving = true;
 			}
 
-			if (sheeple.CanAttack)
-			{
-				if (MFInput_WasPressed(playerKeyboardMappings[keyboardDeviceID][KeyMoves.Light], MFInputDevice.Keyboard, 0))
-					lightAttacking = true;
-				else if (MFInput_WasPressed(playerKeyboardMappings[keyboardDeviceID][KeyMoves.Heavy], MFInputDevice.Keyboard, 0))
-					heavyAttacking = true;
-				else if (MFInput_WasPressed(playerKeyboardMappings[keyboardDeviceID][KeyMoves.Special], MFInputDevice.Keyboard, 0))
-					specialAttacking = true;
-			}
-
-			if (sheeple.CanBlock)
-			{
-				if (!sheeple.IsBlocking && MFInput_Read(playerKeyboardMappings[keyboardDeviceID][KeyMoves.Block], MFInputDevice.Keyboard, 0, null) > 0)
-				{
-					blocking = true;
-				}
-				else if (sheeple.IsBlocking && MFInput_Read(playerKeyboardMappings[keyboardDeviceID][KeyMoves.Block], MFInputDevice.Keyboard, 0, null) <= 0)
-				{
-					unblocking = true;
-				}
-			}
 		}
 
 		if (moving)
 			sheeple.OnMove(direction);
 
-		if (lightAttacking)
-			sheeple.OnLightAttack();
-		if (heavyAttacking)
-			sheeple.OnHeavyAttack();
-		if (specialAttacking)
-			sheeple.OnSpecialAttack();
-
-		if (blocking)
-			sheeple.OnBlock();
-		else if (unblocking)
-			sheeple.OnUnblock();
 	}
 
 	@property bool Valid() { return PadValid || KeyboardValid; }
