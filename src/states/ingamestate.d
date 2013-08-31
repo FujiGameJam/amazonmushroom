@@ -9,6 +9,7 @@ import interfaces.thinker;
 import util.eventtypes;
 
 import thinkers.localplayer;
+import thinkers.autoplayer;
 import thinkers.nullthinker;
 
 import game;
@@ -28,12 +29,20 @@ import entity.throbbingrobot;
 import entity.mushroom;
 import entity.arena;
 
+import config;
+
 import std.string;
 import std.conv;
 import std.random;
+import std.container;
 
 class InGameState : IState, IRenderable
 {
+	this()
+	{
+		instance = this;
+	}
+
 	///IState
 	void OnAdd(StateMachine statemachine)
 	{
@@ -49,6 +58,8 @@ class InGameState : IState, IRenderable
 
 		ThrobbingRobot robot = CreateEntity!ThrobbingRobot();
 		ThrobbingRobot robot2 = CreateEntity!ThrobbingRobot();
+		ThrobbingRobot auto1 = CreateEntity!ThrobbingRobot();
+		ThrobbingRobot auto2 = CreateEntity!ThrobbingRobot();
 
 		// IEntity robot = CreateEntity("ThrobbingRobot");
 		arena = CreateEntity!Arena();
@@ -63,6 +74,8 @@ class InGameState : IState, IRenderable
 
 			auto newMushroom = CreateEntity!Mushroom();
 			newMushroom.SetInitialPos(pos);
+			auto index = uniform(0, Config.mushroomType.length);
+			newMushroom.SetConfig(Config.mushroomType[index]);
 		}
 
 		resetEvent();
@@ -136,6 +149,13 @@ class InGameState : IState, IRenderable
 		updateEvent();
 		collision.OnUpdate();
 		postUpdateEvent();
+
+		//while (!entitiesToRemove.empty())
+		//{
+		//    auto x = entitiesToRemove.back();
+		//    entitiesToRemove.removeBack();
+		//    delete x;
+		//}
 	}
 
 	@property StateMachine Owner() { return owner; }
@@ -206,6 +226,9 @@ class InGameState : IState, IRenderable
 	@property bool CanRenderWorld() { return true; }
 	@property bool CanRenderGUI() { return true; }
 
+	static InGameState instance;
+	static @property InGameState Instance() { return instance; }
+
 	// InGameState specific stuff
 	T CreateEntity(T = IEntity)(string type = T.stringof, ElementParser parser = null)
 	{
@@ -244,6 +267,37 @@ class InGameState : IState, IRenderable
 		return null;
 	}
 
+	void DestroyEntity(IEntity entity)
+	{
+		if (entity !is null)
+		{
+			IEntity actualEntity = cast(IEntity) entity;
+
+			if (actualEntity !is null)
+			{
+				RemoveEntity(actualEntity);
+			}
+			if (cast(IRenderable) entity !is null)
+			{
+				AddRenderable(cast(IRenderable) entity);
+			}
+			if (cast(ThrobbingRobot) entity !is null)
+			{
+				AddThrobbingRobot(cast(ThrobbingRobot) entity);
+			}
+			if (cast(Mushroom) entity !is null)
+			{
+				AddMushroom(cast(Mushroom) entity);
+			}
+			if (cast(ICollider) entity !is null)
+			{
+				AddCollider(cast(ICollider) entity);
+			}
+		}
+
+		entitiesToRemove ~= entity;
+	}
+
 	void AddEntity(IEntity entity)
 	{
 		resolveEvent.subscribe(&entity.OnResolve);
@@ -258,6 +312,20 @@ class InGameState : IState, IRenderable
 		entities[entity.Name] = entity;
 	}
 
+	void RemoveEntity(IEntity entity)
+	{
+		resolveEvent.unsubscribe(&entity.OnResolve);
+		resetEvent.unsubscribe(&entity.OnReset);
+
+		if (entity.CanUpdate)
+		{
+			updateEvent.unsubscribe(&entity.OnUpdate);
+			postUpdateEvent.unsubscribe(&entity.OnPostUpdate);
+		}
+
+		entities[entity.Name] = null;
+	}
+
 	void AddRenderable(IRenderable renderable)
 	{
 		if (renderable.CanRenderWorld)
@@ -266,11 +334,20 @@ class InGameState : IState, IRenderable
 			renderGUIEvent.subscribe(&renderable.OnRenderGUI);
 	}
 
+	void RemoveRenderable(IRenderable renderable)
+	{
+		if (renderable.CanRenderWorld)
+			renderWorldEvent.unsubscribe(&renderable.OnRenderWorld);
+		if (renderable.CanRenderGUI)
+			renderGUIEvent.unsubscribe(&renderable.OnRenderGUI);
+	}
+
 	void AddThrobbingRobot(ThrobbingRobot robot)
 	{
 		IThinker thinker;
 
-		if (toLower(robot.Name[0 .. 6]) == "player")
+		//if (toLower(robot.Name[0 .. 6]) == "player")
+		if (robots.length < 2)
 		{
 			char indexString = robot.Name[6];
 
@@ -279,7 +356,7 @@ class InGameState : IState, IRenderable
 		}
 		else
 		{
-			thinker = new NullThinker;
+			thinker = new AutoPlayer(-1);
 		}
 
 		if (thinker.OnAssign(robot))
@@ -291,9 +368,29 @@ class InGameState : IState, IRenderable
 		robots ~= robot;
 	}
 
+	//void RemoveThrobbingRobot(ThrobbingRobot robot)
+	//{
+	//    thinkEvent.unsubscribe(&thinker.OnThink);
+	//
+	//    thinkers ~= thinker;
+	//    robots ~= robot;
+	//}
+
 	void AddMushroom(Mushroom mushroom)
 	{
 		mushrooms ~= mushroom;
+	}
+
+	void RemoveMushroom(Mushroom mushroom)
+	{
+		foreach(i, m; mushrooms)
+		{
+			if (m is mushroom)
+			{
+				mushrooms = mushrooms[0..i] ~ mushrooms[i+1..$];
+				break;
+			}
+		}
 	}
 
 	void AddCollider(ICollider collider)
@@ -324,4 +421,6 @@ class InGameState : IState, IRenderable
 	private ThrobbingRobot[] robots;
 	private Mushroom[] mushrooms;
 	private Arena arena;
+
+	private Array!IEntity entitiesToRemove;
 }

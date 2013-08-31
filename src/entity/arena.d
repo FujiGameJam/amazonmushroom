@@ -72,16 +72,6 @@ class Arena : IEntity, IRenderable
 	{
 		auto min = MFVector(0, 0, 0);
 		auto max = bounds;
-		//
-		//MFPrimitive(PrimType.TriStrip);
-		//MFBegin(4);
-		//
-		//MFSetPosition(min.x, min.y, max.z);
-		//MFSetPosition(max.x, min.y, max.z);
-		//MFSetPosition(min.x, min.y, min.z);
-		//MFSetPosition(max.x, min.y, min.z);
-		//
-		//MFEnd();
 
 		MFRenderer_AddModel(pModel, null, MFView_GetViewState());
 	}
