@@ -28,6 +28,7 @@ class ThrobbingRobot : ISheeple, IEntity, IRenderable, ICollider
 	private	Camera				camera = null;
 	private MFVector			moveDirection;
 	private MFVector			facingDirection;
+	private MFVector			modelOffset = MFVector(0.0, 0.5, 0.0);
 
 	private ObjectState			currentState,
 								initialState;
@@ -103,7 +104,7 @@ class ThrobbingRobot : ISheeple, IEntity, IRenderable, ICollider
 		modelTransform.x = facingDirection * ModelScale;
 		modelTransform.y *= ModelScale;
 		modelTransform.z = facingDirection.cross3(MFVector.up) * ModelScale;
-		modelTransform.t = currentState.transform.t;
+		modelTransform.t = currentState.transform.t + modelOffset;
 
 		MFModel_SetWorldMatrix(pModel, modelTransform);
 	}
@@ -132,17 +133,19 @@ class ThrobbingRobot : ISheeple, IEntity, IRenderable, ICollider
 		collision = owner;
 	}
 
-	override void OnCollision(ICollider other)
+	override bool OnCollision(ICollider other)
 	{
 		switch (other.CollisionClassEnum())
 		{
 		case CollisionClass.Mushroom:
-			break;
-		case CollisionClass.Obstacle:
-			break;
-		case CollisionClass.Robot:
-			break;
+			// pickup?
+			return false;
+		//case CollisionClass.Obstacle:
+		//    break;
+		//case CollisionClass.Robot:
+		//    break;
 		default:
+			return true;
 		}
 	}
 
@@ -160,7 +163,7 @@ class ThrobbingRobot : ISheeple, IEntity, IRenderable, ICollider
 	{
 		MFMatrix transform;
 
-		transform.t = currentState.transform.t + MFVector(1.5, 2.5, -10.5);
+		transform.t = currentState.transform.t + MFVector(1.5, 2.5, -5.5);
 
 		transform.z = normalise( currentState.transform.t - transform.t );
 		transform.x = cross3( MFVector(0, 1, 0), transform.z );
