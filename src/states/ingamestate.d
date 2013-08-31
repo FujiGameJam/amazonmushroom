@@ -30,6 +30,7 @@ import entity.arena;
 
 import std.string;
 import std.conv;
+import std.random;
 
 class InGameState : IState, IRenderable
 {
@@ -41,6 +42,8 @@ class InGameState : IState, IRenderable
 
 	void OnEnter()
 	{
+		const int numMushrooms = 20;
+
 		collision = new CollisionManager;
 		collision.PlaneDimensions = Arena.bounds;
 
@@ -50,9 +53,77 @@ class InGameState : IState, IRenderable
 		// IEntity robot = CreateEntity("ThrobbingRobot");
 		arena = CreateEntity!Arena();
 
-		CreateEntity!Mushroom();
+		for (int i = 0; i <= numMushrooms; i++)
+		{
+			MFVector pos = getEmptyLocation();
+			if ((pos - MFVector(0,0,0,1)).mag3 < 0.01)  // if it's essentially the same vector, ie: the getEmptyLocation failed
+			{
+				continue; // don't spawn
+			}
+
+			auto newMushroom = CreateEntity!Mushroom();
+			newMushroom.SetInitialPos(pos);
+		}
 
 		resetEvent();
+	}
+
+	MFVector getEmptyLocation()
+	{
+		const float spacing = 10.0;
+		
+		MFVector retvect = MFVector(0,0,0,1.0);
+
+		bool success = false;
+		int loop = 0;
+
+		while (!success)
+		{
+			++loop;
+			retvect.x = uniform(0.0, arena.bounds.x);
+			retvect.z = uniform(0.0, arena.bounds.z);
+			/*
+			string debugline = "bounds: "~to!string(arena.bounds.x)~","~to!string(arena.bounds.y)~","~to!string(arena.bounds.z)~","~to!string(arena.bounds.w);
+			MFDebug_Message(debugline.toStringz);
+			debugline = "retvect: "~to!string(retvect.x)~","~to!string(retvect.y)~","~to!string(retvect.z)~","~to!string(retvect.w);
+			MFDebug_Message(debugline.toStringz);
+			*/
+
+			success = true;
+
+			// check against mushroom positions
+			foreach (i, mushroom; mushrooms)
+			{
+				auto temp = (retvect - mushroom.CollisionPosition).mag3;
+				if (temp < spacing)
+				{
+					success = false;
+					break;
+				}
+			}
+
+			// check against player positions
+			if (success)
+			{
+				foreach (i, robot; robots)
+				{
+					auto temp = (retvect - robot.CollisionPosition).mag3;
+					if (temp < spacing)
+					{
+						success = false;
+						break;
+					}
+				}
+			}
+
+			if (loop > 1000)
+			{
+				return MFVector(0,0,0,1); // returns (0,0,0,1) -- can test for this and abort the move/spawn/whatever
+			}
+			
+		}
+
+		return retvect;
 	}
 
 	void OnExit()
@@ -133,7 +204,7 @@ class InGameState : IState, IRenderable
 	void OnRenderGUI(MFRect orthoRect)
 	{
 		Renderer.Instance.SetUILayer();
-		
+
 		renderGUIEvent(orthoRect);
 	}
 

@@ -15,6 +15,7 @@ import fuji.system;
 import std.random;
 import std.conv;
 
+
 class Mushroom : IEntity, IRenderable, ICollider
 {
 	struct ObjectState
@@ -27,7 +28,7 @@ class Mushroom : IEntity, IRenderable, ICollider
 	private MFVector			facingDirection;
 
 	private ObjectState			currentState,
-								initialState;
+		initialState;
 
 	private CollisionManager	collision = null;
 
@@ -44,9 +45,19 @@ class Mushroom : IEntity, IRenderable, ICollider
 	override void OnCreate(ElementParser element)
 	{
 		pModel = MFModel_Create("mushroom.x");
-
 		initialState.transform.t.x = uniform(0.0, 8.0);
 		initialState.transform.t.z = uniform(0.0, 8.0);
+	}
+
+	void SetInitialPos(MFVector v)
+	{
+		initialState.transform.t = v;
+		SetPos(v);
+	}
+
+	void SetPos(MFVector v)
+	{
+		currentState.transform.t = v;
 	}
 
 	override void OnResolve(IEntity[string] loadedEntities)
@@ -59,7 +70,7 @@ class Mushroom : IEntity, IRenderable, ICollider
 
 		moveDirection = MFVector.zero;
 	}
-	
+
 	override void OnDestroy()
 	{
 		MFModel_Destroy(pModel);
@@ -129,5 +140,5 @@ class Mushroom : IEntity, IRenderable, ICollider
 	enum WalkSpeed = 4.0;
 	enum RunSpeed = 11.0;
 
-	enum ModelScale = 1.0 / 1.0; // To convert the model to meters, and then halve it
+	enum ModelScale = 1.0 / 3.0; // To convert the model to meters, and then halve it
 }
