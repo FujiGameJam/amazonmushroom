@@ -4,8 +4,8 @@ public import interfaces.thinker;
 
 class NullThinker : IThinker
 {
-	bool OnAssign(ISheeple sheeple) { return false; }
-	void OnThink() { }
+	override bool OnAssign(ISheeple sheeple) { return false; }
+	override void OnThink() { }
 
 	@property bool Valid() { return false; }
 }

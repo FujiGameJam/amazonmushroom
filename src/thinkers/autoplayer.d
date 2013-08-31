@@ -17,14 +17,14 @@ class AutoPlayer : IThinker
 		sheeple = null;
 	}
 
-	bool OnAssign(ISheeple sheepWantsToFollow)
+	override bool OnAssign(ISheeple sheepWantsToFollow)
 	{
 		sheeple = sheepWantsToFollow;
 
 		return Valid;
 	}
 
-	void OnThink()
+	override void OnThink()
 	{
 		bool	moving = false;
 
@@ -43,7 +43,7 @@ class AutoPlayer : IThinker
 
 	}
 
-	@property bool Valid() { return true; }
+	override @property bool Valid() { return true; }
 
 	private ISheeple sheeple;
 	private int playerIndex;
