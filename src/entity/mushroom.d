@@ -1,4 +1,4 @@
-module entity.throbbingrobot;
+module entity.mushroom;
 
 import interfaces.thinker;
 import interfaces.entity;
@@ -15,17 +15,14 @@ import fuji.system;
 import std.random;
 import std.conv;
 
-class ThrobbingRobot : ISheeple, IEntity, IRenderable, ICollider
+class Mushroom : IEntity, IRenderable, ICollider
 {
 	struct ObjectState
 	{
 		MFMatrix		transform		= MFMatrix.identity;
 		MFMatrix		prevTransform	= MFMatrix.identity;
-
-		ISheeple.Moves	activeMoves		= ISheeple.Moves.None;
 	}
 
-	private	Camera				camera = null;
 	private MFVector			moveDirection;
 	private MFVector			facingDirection;
 
@@ -36,30 +33,12 @@ class ThrobbingRobot : ISheeple, IEntity, IRenderable, ICollider
 
 	private MFModel*			pModel;
 
-	private string				name = "player1";
-
-	final @property Camera TrailingCamera()	{ return camera; }
-
-	static int currPlayer = 1;
+	private string				name = "mushroom";
 
 	this()
 	{
-		camera = new Camera();
-		name = "player" ~ to!string(currPlayer++);
-
 		facingDirection = MFVector(0,0,1,0);
 	}
-
-	///ISheeple
-	override void OnMove(MFVector direction)
-	{
-		if(direction != MFVector.zero)
-			facingDirection = direction;
-		moveDirection = direction;
-	}
-
-	override @property bool CanMove()		{ return true; }
-	override @property bool IsRunning()		{ return (currentState.activeMoves & ISheeple.Moves.Run) != 0; }
 
 	///IEntity
 	override void OnCreate(ElementParser element)
@@ -79,7 +58,6 @@ class ThrobbingRobot : ISheeple, IEntity, IRenderable, ICollider
 		currentState = initialState;
 
 		moveDirection = MFVector.zero;
-		UpdateCamera();
 	}
 	
 	override void OnDestroy()
@@ -97,8 +75,6 @@ class ThrobbingRobot : ISheeple, IEntity, IRenderable, ICollider
 	// Need to resolve post-movement collisions, such as punching someone? Here's the place to do it.
 	override void OnPostUpdate()
 	{
-		UpdateCamera();
-
 		MFMatrix modelTransform = MFMatrix.identity;
 		modelTransform.x = facingDirection * ModelScale;
 		modelTransform.y *= ModelScale;
@@ -138,21 +114,9 @@ class ThrobbingRobot : ISheeple, IEntity, IRenderable, ICollider
 	override @property MFVector CollisionPrevPosition()				{ return currentState.prevTransform.t; }
 
 	override @property CollisionType CollisionTypeEnum()			{ return CollisionType.Sphere; }
-	override @property CollisionClass CollisionClassEnum()			{ return CollisionClass.Robot; }
+	override @property CollisionClass CollisionClassEnum()			{ return CollisionClass.Mushroom; }
 	override @property MFVector CollisionParameters()				{ return MFVector(0.5, 0.0, 0.0, 0.0); }
 
-	// Robot specific stuff
-	void UpdateCamera()
-	{
-		MFMatrix transform;
-
-		transform.t = currentState.transform.t + MFVector(1.5, 2.5, -10.5);
-
-		transform.z = normalise( currentState.transform.t - transform.t );
-		transform.x = cross3( MFVector(0, 1, 0), transform.z );
-		transform.y = cross3( transform.z, transform.x );
-		camera.transform = transform;
-	}
 
 	final @property MovementSpeed()									{ return WalkSpeed; } // Update this when running is implemented
 	final @property MovementSpeedThisFrame()						{ return MovementSpeed * MFSystem_GetTimeDelta(); }
@@ -160,5 +124,5 @@ class ThrobbingRobot : ISheeple, IEntity, IRenderable, ICollider
 	enum WalkSpeed = 4.0;
 	enum RunSpeed = 11.0;
 
-	enum ModelScale = 1.0 / 20.0; // To convert the model to meters, and then halve it
+	enum ModelScale = 1.0 / 40.0; // To convert the model to meters, and then halve it
 }

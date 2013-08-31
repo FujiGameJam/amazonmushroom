@@ -24,6 +24,7 @@ import fuji.font;
 import fuji.sound;
 
 import entity.throbbingrobot;
+import entity.mushroom;
 
 import std.string;
 import std.conv;
@@ -45,6 +46,8 @@ class InGameState : IState, IRenderable
 		ThrobbingRobot robot2 = CreateEntity!ThrobbingRobot();
 
 		// IEntity robot = CreateEntity("ThrobbingRobot");
+
+		CreateEntity!Mushroom();
 
 		resetEvent();
 	}
@@ -145,6 +148,10 @@ class InGameState : IState, IRenderable
 			{
 				AddThrobbingRobot(cast(ThrobbingRobot) entity);
 			}
+			if (cast(Mushroom) entity !is null)
+			{
+				AddMushroom(cast(Mushroom) entity);
+			}
 			if (cast(ICollider) entity !is null)
 			{
 				AddCollider(cast(ICollider) entity);
@@ -203,6 +210,11 @@ class InGameState : IState, IRenderable
 		robots ~= robot;
 	}
 
+	void AddMushroom(Mushroom mushroom)
+	{
+		mushrooms ~= mushroom;
+	}
+
 	void AddCollider(ICollider collider)
 	{
 		colliders ~= collider;
@@ -229,4 +241,5 @@ class InGameState : IState, IRenderable
 	private IThinker[] thinkers;
 	private ICollider[] colliders;
 	private ThrobbingRobot[] robots;
+	private Mushroom[] mushrooms;
 }

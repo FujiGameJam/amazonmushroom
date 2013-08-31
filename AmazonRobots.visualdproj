@@ -382,6 +382,7 @@
   </Folder>
   <Folder name="entity">
    <File path="src\entity\arena.d" />
+   <File path="src\entity\mushroom.d" />
    <File path="src\entity\throbbingrobot.d" />
   </Folder>
   <Folder name="fuji">
