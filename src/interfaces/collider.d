@@ -25,6 +25,8 @@ interface ICollider
 {
 	void OnAddCollision(CollisionManager owner);
 
+	void OnCollision(ICollider other);
+
 	@property MFVector CollisionPosition();
 	@property MFVector CollisionPosition(MFVector pos);
 
@@ -125,11 +127,14 @@ class CollisionManager
 		foreach(index, collider; colliders)
 		{
 			MFVector pos = collider.CollisionPosition;
-			pos.x = min(max(pos.x, 0), planeDimensions.x);
-			pos.z = min(max(pos.z, 0), planeDimensions.z);
+			if (pos.x < 0) pos.x += planeDimensions.x;
+			if (pos.x > planeDimensions.x) pos.x -= planeDimensions.x;
+
+			if (pos.z < 0) pos.z += planeDimensions.z;
+			if (pos.z > planeDimensions.z) pos.z -= planeDimensions.z;
+
 			collider.CollisionPosition = pos;
 		}
-
 	}
 
 	void AddCollider(ICollider collider)

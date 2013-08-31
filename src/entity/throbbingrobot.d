@@ -132,6 +132,20 @@ class ThrobbingRobot : ISheeple, IEntity, IRenderable, ICollider
 		collision = owner;
 	}
 
+	override void OnCollision(ICollider other)
+	{
+		switch (other.CollisionClassEnum())
+		{
+		case CollisionClass.Mushroom:
+			break;
+		case CollisionClass.Obstacle:
+			break;
+		case CollisionClass.Robot:
+			break;
+		default:
+		}
+	}
+
 	override @property MFVector CollisionPosition()					{ return currentState.transform.t; }
 	override @property MFVector CollisionPosition(MFVector pos)		{ currentState.transform.t = pos; return pos; }
 

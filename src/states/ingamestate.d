@@ -25,6 +25,7 @@ import fuji.sound;
 
 import entity.throbbingrobot;
 import entity.mushroom;
+import entity.arena;
 
 import std.string;
 import std.conv;
@@ -40,12 +41,13 @@ class InGameState : IState, IRenderable
 	void OnEnter()
 	{
 		collision = new CollisionManager;
-		collision.PlaneDimensions = MFVector(32.0, 10.0, 32.0);
+		collision.PlaneDimensions = Arena.bounds;
 
 		ThrobbingRobot robot = CreateEntity!ThrobbingRobot();
 		ThrobbingRobot robot2 = CreateEntity!ThrobbingRobot();
 
 		// IEntity robot = CreateEntity("ThrobbingRobot");
+		arena = CreateEntity!Arena();
 
 		CreateEntity!Mushroom();
 
@@ -242,4 +244,5 @@ class InGameState : IState, IRenderable
 	private ICollider[] colliders;
 	private ThrobbingRobot[] robots;
 	private Mushroom[] mushrooms;
+	private Arena arena;
 }

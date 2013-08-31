@@ -11,6 +11,7 @@ import fuji.model;
 import fuji.render;
 import fuji.view;
 import fuji.primitive;
+import fuji.vector;
 
 class Arena : IEntity, IRenderable
 {
@@ -21,6 +22,8 @@ class Arena : IEntity, IRenderable
 
 	private ObjectState			currentState,
 								initialState;
+	
+	static MFVector bounds = MFVector(32.0, 10.0, 32.0);
 
 //	private MFModel*			pModel;
 
@@ -65,13 +68,16 @@ class Arena : IEntity, IRenderable
 	///IRenderable
 	override void OnRenderWorld()
 	{
-		MFPrimitive(PrimType.TriList);
+		auto min = MFVector(0, 0, 0);
+		auto max = bounds;
+
+		MFPrimitive(PrimType.TriStrip);
 		MFBegin(4);
 
-		MFSetPosition(-100, -10, 100);
-		MFSetPosition(100, -10, 100);
-		MFSetPosition(-100, -10, -100);
-		MFSetPosition(100, -10, -100);
+		MFSetPosition(min.x, min.y, max.z);
+		MFSetPosition(max.x, min.y, max.z);
+		MFSetPosition(min.x, min.y, min.z);
+		MFSetPosition(max.x, min.y, min.z);
 
 		MFEnd();
 
