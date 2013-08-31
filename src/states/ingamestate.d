@@ -24,6 +24,7 @@ import fuji.font;
 import fuji.sound;
 
 import entity.throbbingrobot;
+import entity.arena;
 
 import std.string;
 import std.conv;
@@ -45,6 +46,7 @@ class InGameState : IState, IRenderable
 		ThrobbingRobot robot2 = CreateEntity!ThrobbingRobot();
 
 		// IEntity robot = CreateEntity("ThrobbingRobot");
+		arena = CreateEntity!Arena();
 
 		resetEvent();
 	}
@@ -229,4 +231,5 @@ class InGameState : IState, IRenderable
 	private IThinker[] thinkers;
 	private ICollider[] colliders;
 	private ThrobbingRobot[] robots;
+	private Arena arena;
 }
