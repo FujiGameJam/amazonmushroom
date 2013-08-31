@@ -39,9 +39,14 @@ class InGameState : IState, IRenderable
 	void OnEnter()
 	{
 		collision = new CollisionManager;
+		collision.PlaneDimensions = MFVector(32.0, 10.0, 32.0);
 
 		ThrobbingRobot robot = CreateEntity!ThrobbingRobot();
+		ThrobbingRobot robot2 = CreateEntity!ThrobbingRobot();
+
 		// IEntity robot = CreateEntity("ThrobbingRobot");
+
+		resetEvent();
 	}
 
 	void OnExit()
@@ -81,6 +86,9 @@ class InGameState : IState, IRenderable
 				// TODO: Reset the viewport here
 			}
 			MFView_Pop();
+
+			// TODO: Remove once viewports are implemented
+			break;
 		}
 	}
 
