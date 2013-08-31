@@ -9,7 +9,7 @@ import std.math;
 
 class Camera
 {
-	protected MFMatrix transform;
+	MFMatrix transform;
 	protected float	nearPlane = 0.01,
 					farPlane = 100000;
 	protected float fov = MFDeg2Rad!60;
