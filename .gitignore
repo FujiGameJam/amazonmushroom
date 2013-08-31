@@ -11,3 +11,11 @@
 *.lai
 *.la
 *.a
+
+[Dd]ebug
+[Rr]elease
+
+# visual studio
+*.sdf
+*.opensdf
+*.suo
