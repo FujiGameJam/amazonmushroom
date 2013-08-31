@@ -25,7 +25,7 @@ class ThrobbingRobot : ISheeple, IEntity, IRenderable, ICollider
 		ISheeple.Moves	activeMoves		= ISheeple.Moves.None;
 	}
 
-	private	Camera				camera = new Camera();
+	private	Camera				camera = null;
 	private MFVector			moveDirection;
 
 	private ObjectState			currentState,
@@ -43,6 +43,7 @@ class ThrobbingRobot : ISheeple, IEntity, IRenderable, ICollider
 
 	this()
 	{
+		camera = new Camera();
 		name = "player" ~ to!string(currPlayer++);
 	}
 
