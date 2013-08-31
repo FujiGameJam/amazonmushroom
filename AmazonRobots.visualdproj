@@ -452,6 +452,7 @@
    <File path="src\states\loadingscreenstate.d" />
   </Folder>
   <Folder name="thinkers">
+   <File path="src\thinkers\autoplayer.d" />
    <File path="src\thinkers\localplayer.d" />
    <File path="src\thinkers\nullthinker.d" />
   </Folder>
@@ -459,6 +460,7 @@
    <File path="src\util\event.d" />
    <File path="src\util\eventtypes.d" />
   </Folder>
+  <File path="src\config.d" />
   <File path="src\game.d" />
   <File path="src\renderer.d" />
   <File path="src\winmain.d" />

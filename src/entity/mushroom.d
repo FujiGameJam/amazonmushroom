@@ -12,8 +12,11 @@ import fuji.render;
 import fuji.view;
 import fuji.system;
 
+import config;
+
 import std.random;
 import std.conv;
+import std.string;
 
 
 class Mushroom : IEntity, IRenderable, ICollider
@@ -33,6 +36,8 @@ class Mushroom : IEntity, IRenderable, ICollider
 	private CollisionManager	collision = null;
 
 	private MFModel*			pModel;
+
+	private Config.Mushroom		config;
 
 	private string				name = "mushroom";
 
@@ -58,6 +63,13 @@ class Mushroom : IEntity, IRenderable, ICollider
 	void SetPos(MFVector v)
 	{
 		currentState.transform.t = v;
+	}
+
+	void SetConfig(Config.Mushroom conf)
+	{
+		config = conf;
+		MFModel_Destroy(pModel);
+		pModel = MFModel_Create(config.modelName.toStringz);
 	}
 
 	override void OnResolve(IEntity[string] loadedEntities)
@@ -136,6 +148,9 @@ class Mushroom : IEntity, IRenderable, ICollider
 
 	final @property MovementSpeed()									{ return WalkSpeed; } // Update this when running is implemented
 	final @property MovementSpeedThisFrame()						{ return MovementSpeed * MFSystem_GetTimeDelta(); }
+
+
+	final @property Config.Mushroom GetConfig()						{ return config; }
 
 	enum WalkSpeed = 4.0;
 	enum RunSpeed = 11.0;

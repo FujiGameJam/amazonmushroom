@@ -16,6 +16,12 @@ import fuji.system;
 import fuji.material;
 import fuji.primitive;
 
+import entity.mushroom;
+
+import states.ingamestate;
+
+import game;
+
 import std.random;
 import std.conv;
 import std.math;
@@ -49,11 +55,11 @@ class ThrobbingRobot : ISheeple, IEntity, IRenderable, ICollider
 		float time = 0;
 		float tempo = 1;
 		float prestige = 1;
-		float spin = 0.2;
-		float sway = 100;
+		float spin = 0;
+		float sway = 0;
 		float sheer = 0;
 		float warp = 0;
-		float wonkey = 30;
+		float wonkey = 0;
 	}
 
 	Psych psych;
@@ -230,7 +236,11 @@ class ThrobbingRobot : ISheeple, IEntity, IRenderable, ICollider
 		switch (other.CollisionClassEnum())
 		{
 		case CollisionClass.Mushroom:
-			// pickup?
+			{
+				auto mush = cast(Mushroom)other;
+				psych.wonkey += mush.GetConfig.toxicity;
+				InGameState.Instance.DestroyEntity(mush);
+			}
 			return false;
 		//case CollisionClass.Obstacle:
 		//    break;
