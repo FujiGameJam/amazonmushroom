@@ -381,11 +381,8 @@
    <File path="src\camera\camera.d" />
   </Folder>
   <Folder name="entity">
+   <File path="src\entity\arena.d" />
    <File path="src\entity\throbbingrobot.d" />
-  </Folder>
-  <Folder name="util">
-   <File path="src\util\event.d" />
-   <File path="src\util\eventtypes.d" />
   </Folder>
   <Folder name="fuji">
    <Folder name="asset">
@@ -457,7 +454,12 @@
    <File path="src\thinkers\localplayer.d" />
    <File path="src\thinkers\nullthinker.d" />
   </Folder>
+  <Folder name="util">
+   <File path="src\util\event.d" />
+   <File path="src\util\eventtypes.d" />
+  </Folder>
   <File path="src\game.d" />
+  <File path="src\renderer.d" />
   <File path="src\winmain.d" />
  </Folder>
 </DProject>

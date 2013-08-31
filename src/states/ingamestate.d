@@ -12,6 +12,7 @@ import thinkers.localplayer;
 import thinkers.nullthinker;
 
 import game;
+import renderer;
 
 import fuji.render;
 import fuji.material;
@@ -38,9 +39,14 @@ class InGameState : IState, IRenderable
 	void OnEnter()
 	{
 		collision = new CollisionManager;
+		collision.PlaneDimensions = MFVector(32.0, 10.0, 32.0);
 
 		ThrobbingRobot robot = CreateEntity!ThrobbingRobot();
+		ThrobbingRobot robot2 = CreateEntity!ThrobbingRobot();
+
 		// IEntity robot = CreateEntity("ThrobbingRobot");
+
+		resetEvent();
 	}
 
 	void OnExit()
@@ -58,28 +64,58 @@ class InGameState : IState, IRenderable
 	@property StateMachine Owner() { return owner; }
 	private StateMachine owner;
 
-	///IRenderable
-	void OnRenderWorld()
+	void RenderBackground()
 	{
-		MFRenderer_ClearScreen(MFRenderClearFlags.All, MFVector.black, cast(float)1.0, 0);
+		Renderer.Instance.SetBackgroundLayer();
 
-		foreach( robot; robots )
+		//...
+	}
+
+	void RenderPlayers()
+	{
+		foreach(i, robot; robots)
 		{
+			Renderer.Instance.SetPlayerLayer(i);
+
 			MFView_Push();
 			{
-				// TODO: Jam a viewport in to the robot, set that, then Camera.Apply();
 				robot.TrailingCamera.Apply();
 
 				renderWorldEvent();
-				// TODO: Reset the viewport here
 			}
 			MFView_Pop();
 		}
+	}
 
+	void ComposeScene()
+	{
+		Renderer.Instance.SetCompositeLayer();
+
+		MFView_Push();
+		MFRect rect = MFRect(0, 0, 1280, 720);
+		MFView_SetOrtho(&rect);
+		{
+			foreach(i, robot; robots)
+			{
+				MFMaterial_SetMaterial(Renderer.Instance.GetPlayerRT(i));
+				MFPrimitive_DrawQuad((i&1) * 300, (i>>1) * 300, 300, 300);
+			}
+		}
+		MFView_Pop();
+	}
+
+	///IRenderable
+	void OnRenderWorld()
+	{
+		RenderBackground();
+		RenderPlayers();
+		ComposeScene();
 	}
 
 	void OnRenderGUI(MFRect orthoRect)
 	{
+		Renderer.Instance.SetUILayer();
+		
 		renderGUIEvent(orthoRect);
 	}
 
