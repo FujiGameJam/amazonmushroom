@@ -1,5 +1,7 @@
 module entity.throbbingrobot;
 
+import renderer;
+
 import interfaces.thinker;
 import interfaces.entity;
 import interfaces.renderable;
@@ -11,9 +13,12 @@ import fuji.model;
 import fuji.render;
 import fuji.view;
 import fuji.system;
+import fuji.material;
+import fuji.primitive;
 
 import std.random;
 import std.conv;
+import std.math;
 
 class ThrobbingRobot : ISheeple, IEntity, IRenderable, ICollider
 {
@@ -37,7 +42,78 @@ class ThrobbingRobot : ISheeple, IEntity, IRenderable, ICollider
 
 	private MFModel*			pModel;
 
-	private string				name = "player1";
+	private string				name;
+
+	struct Psych
+	{
+		float time = 0;
+		float tempo = 1;
+		float prestige = 1;
+		float spin = 0;
+		float sway = 100;
+		float sheer = 0;
+		float warp = 0;
+		float wonkey = 30;
+	}
+
+	Psych psych;
+
+	void RenderViewport(size_t i)
+	{
+		MFVector[4] corners =
+		[
+			MFVector(-320, -180, 0, 0),
+			MFVector(320, -180, 0, 0),
+			MFVector(-320, 180, 0, 0),
+			MFVector(320, 180, 0, 0)
+		];
+
+		MFVector pos = corners[i] / psych.prestige;
+		pos.x += psych.sway * sin(psych.time) + sin(psych.time * (1.0/7.0));
+		pos.y += psych.sway * sin((psych.time + 0.5) * (1.0/3.0)) + sin(psych.time * (1.0/11.0));
+
+		MFVector[4] vp;
+		vp[0] = pos + corners[0] * psych.prestige;
+		vp[1] = pos + corners[1] * psych.prestige;
+		vp[2] = pos + corners[2] * psych.prestige;
+		vp[3] = pos + corners[3] * psych.prestige;
+
+		vp[0].x += psych.wonkey * sin(psych.time * 0.97);
+		vp[0].y += psych.wonkey * sin(psych.time * 0.86);
+		vp[1].x += psych.wonkey * sin(psych.time * 0.78);
+		vp[1].y += psych.wonkey * sin(psych.time * 0.58);
+		vp[2].x += psych.wonkey * sin(psych.time * 0.93);
+		vp[2].y += psych.wonkey * sin(psych.time * 0.77);
+		vp[3].x += psych.wonkey * sin(psych.time * 0.69);
+		vp[3].y += psych.wonkey * sin(psych.time * 1.17);
+
+		MFVector _min = min(min(vp[0], vp[1]), min(vp[2], vp[3]));
+		MFVector _max = max(max(vp[0], vp[1]), max(vp[2], vp[3]));
+		MFVector mag = _max - _min;
+		float aspect = (_max.y - _min.y) / (_max.x - _min.x);
+		float yOffset = aspect * 0.5;
+
+		MFVector[4] uv;
+		uv[0] = (vp[0] - _min) / mag;
+		uv[1] = (vp[1] - _min) / mag;
+		uv[2] = (vp[2] - _min) / mag;
+		uv[3] = (vp[3] - _min) / mag;
+
+		MFMaterial_SetMaterial(Renderer.Instance.GetPlayerRT(i));
+		MFPrimitive(PrimType.TriStrip, 0);
+		MFBegin(4);
+		MFSetTexCoord1(uv[0].x, uv[0].y*(0.5 - yOffset));
+		MFSetPosition(vp[0].x, vp[0].y, 0.5 + psych.prestige*0.3);
+		MFSetTexCoord1(uv[1].x, uv[1].y*(0.5 - yOffset));
+		MFSetPosition(vp[1].x, vp[1].y, 0.5 + psych.prestige*0.3);
+		MFSetTexCoord1(uv[2].x, uv[2].y*(0.5 + yOffset));
+		MFSetPosition(vp[2].x, vp[2].y, 0.5 + psych.prestige*0.3);
+		MFSetTexCoord1(uv[3].x, uv[3].y*(0.5 + yOffset));
+		MFSetPosition(vp[3].x, vp[3].y, 0.5 + psych.prestige*0.3);
+		MFEnd();
+
+		//MFPrimitive_DrawQuad((i&1) * width, (i>>1) * height, width, height);
+	}
 
 	final @property Camera TrailingCamera()	{ return camera; }
 
@@ -91,6 +167,8 @@ class ThrobbingRobot : ISheeple, IEntity, IRenderable, ICollider
 	// Do movement and other type logic in this one
 	override void OnUpdate()
 	{
+		psych.time += MFSystem_GetTimeDelta() * psych.tempo;
+
 		currentState.prevTransform = currentState.transform;
 		currentState.transform.t += (moveDirection * MovementSpeedThisFrame);
 	}

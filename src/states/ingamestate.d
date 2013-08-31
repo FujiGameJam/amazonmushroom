@@ -179,16 +179,11 @@ class InGameState : IState, IRenderable
 		Renderer.Instance.SetCompositeLayer();
 
 		MFView_Push();
-		MFRect rect = MFRect(0, 0, 1280, 720);
-		auto width = 1280 / 2;
-		auto height = 720 / 2;
+		MFRect rect = MFRect(-640, -360, 1280, 720);
 		MFView_SetOrtho(&rect);
 		{
 			foreach(i, robot; robots)
-			{
-				MFMaterial_SetMaterial(Renderer.Instance.GetPlayerRT(i));
-				MFPrimitive_DrawQuad((i&1) * width, (i>>1) * height, width, height);
-			}
+				robot.RenderViewport(i);
 		}
 		MFView_Pop();
 	}
