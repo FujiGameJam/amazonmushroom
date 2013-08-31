@@ -16,18 +16,25 @@ Frame Root {
     }
     Mesh { // Plane mesh
       4;
-      64.000000;-64.000000; 0.000000;,
       -64.000000;-64.000000; 0.000000;,
+      64.000000;-64.000000; 0.000000;,
       64.000000;64.000000; 0.000000;,
       -64.000000;64.000000; 0.000000;;
       1;
-      4;3,2,0,1;;
+      4;3,2,1,0;;
       MeshNormals { // Plane normals
         1;
          0.000000; 0.000000; 1.000000;;
         1;
         4;0,0,0,0;;
       } // End of Plane normals
+      MeshTextureCoords { // Plane UV coordinates
+        4;
+         0.000100; 0.999900;,
+         0.999900; 0.999900;,
+         0.999900; 0.000100;,
+         0.000100; 0.000100;;
+      } // End of Plane UV coordinates
       MeshMaterialList { // Plane material list
         1;
         1;
