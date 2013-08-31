@@ -31,9 +31,9 @@ Frame Root {
       MeshTextureCoords { // Plane UV coordinates
         4;
          0.000100; 0.999900;,
-         0.500000; 0.999900;,
-         0.500000; 0.500000;,
-         0.000100; 0.500000;;
+         0.999900; 0.999900;,
+         0.999900; 0.000100;,
+         0.000100; 0.000100;;
       } // End of Plane UV coordinates
       MeshMaterialList { // Plane material list
         1;
