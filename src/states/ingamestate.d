@@ -24,6 +24,7 @@ import fuji.font;
 import fuji.sound;
 
 import entity.throbbingrobot;
+import entity.arena;
 
 import std.string;
 import std.conv;
@@ -39,12 +40,13 @@ class InGameState : IState, IRenderable
 	void OnEnter()
 	{
 		collision = new CollisionManager;
-		collision.PlaneDimensions = MFVector(32.0, 10.0, 32.0);
+		collision.PlaneDimensions = Arena.bounds;
 
 		ThrobbingRobot robot = CreateEntity!ThrobbingRobot();
 		ThrobbingRobot robot2 = CreateEntity!ThrobbingRobot();
 
 		// IEntity robot = CreateEntity("ThrobbingRobot");
+		arena = CreateEntity!Arena();
 
 		resetEvent();
 	}
@@ -93,12 +95,14 @@ class InGameState : IState, IRenderable
 
 		MFView_Push();
 		MFRect rect = MFRect(0, 0, 1280, 720);
+		auto width = 1280 / 2;
+		auto height = 720 / 2;
 		MFView_SetOrtho(&rect);
 		{
 			foreach(i, robot; robots)
 			{
 				MFMaterial_SetMaterial(Renderer.Instance.GetPlayerRT(i));
-				MFPrimitive_DrawQuad((i&1) * 300, (i>>1) * 300, 300, 300);
+				MFPrimitive_DrawQuad((i&1) * width, (i>>1) * height, width, height);
 			}
 		}
 		MFView_Pop();
@@ -229,4 +233,5 @@ class InGameState : IState, IRenderable
 	private IThinker[] thinkers;
 	private ICollider[] colliders;
 	private ThrobbingRobot[] robots;
+	private Arena arena;
 }
