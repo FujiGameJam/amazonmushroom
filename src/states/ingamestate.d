@@ -79,16 +79,11 @@ class InGameState : IState, IRenderable
 
 			MFView_Push();
 			{
-				// TODO: Jam a viewport in to the robot, set that, then Camera.Apply();
 				robot.TrailingCamera.Apply();
 
 				renderWorldEvent();
-				// TODO: Reset the viewport here
 			}
 			MFView_Pop();
-
-			// TODO: Remove once viewports are implemented
-			break;
 		}
 	}
 
