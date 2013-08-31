@@ -88,8 +88,6 @@ class InGameState : IState, IRenderable
 				MFView_SetAspectRatio(1);
 				MFView_SetProjection();
 
-				robot.TrailingCamera.Apply();
-
 				foreach(i; 0..3)
 				{
 					foreach(j; 0..3)
