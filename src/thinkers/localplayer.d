@@ -128,6 +128,7 @@ class LocalPlayer : IThinker
 	}
 
 	override @property bool Valid() { return PadValid || KeyboardValid; }
+	override @property ISheeple Sheeple() { return sheeple; }
 
 	@property bool PadValid() { return joypadDeviceID != -1; }
 	@property bool KeyboardValid() { return keyboardDeviceID != -1; }

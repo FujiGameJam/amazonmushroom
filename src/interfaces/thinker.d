@@ -25,4 +25,5 @@ interface IThinker
 	void OnThink();
 
 	@property bool Valid();
+	@property ISheeple Sheeple();
 }

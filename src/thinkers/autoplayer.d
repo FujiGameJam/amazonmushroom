@@ -3,6 +3,7 @@ module thinkers.autoplayer;
 import std.random;
 
 import entity.mushroom;
+import entity.throbbingrobot;
 
 import interfaces.thinker;
 import interfaces.collider;
@@ -37,15 +38,29 @@ class AutoPlayer : IThinker
 		{
 			moving = false;
 
-			ICollider collider = cast(ICollider)sheeple;
-			if (collider !is null)
+			ThrobbingRobot robot = cast(ThrobbingRobot)sheeple;
+
+			if (robot !is null)
 			{
-				Mushroom m = InGameState.Instance.GetClosestMushroom(collider.CollisionPosition());
+				if (robot.carrying is null)
+				{
+					Mushroom m = InGameState.Instance.GetClosestMushroom(robot.CollisionPosition());
 
-				direction = m.CollisionPosition() - collider.CollisionPosition();
-				direction.y = 0;
+					direction = m.CollisionPosition() - robot.CollisionPosition();
+					direction.y = 0;
+					direction = direction.normalise();
+				}
+				else
+				{
+					robot.OnIngest();
 
-				direction = direction.normalise();
+					direction = MFVector.init;
+				}
+				//else
+				//{
+				//    auto enemy = InGameState.Instance.GetClosestRobot(robot);
+				//    direction = enemy.CollisionPosition() - robot.CollisionPosition();
+				//}
 
 				moving = true;
 			}
@@ -68,6 +83,7 @@ class AutoPlayer : IThinker
 	}
 
 	override @property bool Valid() { return true; }
+	override @property ISheeple Sheeple() { return sheeple; }
 
 	private ISheeple sheeple;
 	private int playerIndex;

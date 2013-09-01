@@ -80,9 +80,11 @@ class ThrobbingRobot : ISheeple, IEntity, IRenderable, ICollider
 			MFVector(320, 180, 0, 0)
 		];
 
+		float phase = (i * 2) * (3.14 / 2 / 5);
+
 		MFVector pos = corners[i] / psych.prestige;
-		pos.x += psych.sway * sin(psych.time) + sin(psych.time * (1.0/7.0));
-		pos.y += psych.sway * sin((psych.time + 0.5) * (1.0/3.0)) + sin(psych.time * (1.0/11.0));
+		pos.x += psych.sway * sin(phase + psych.time) + sin(psych.time * (1.0/7.0));
+		pos.y += psych.sway * sin(phase + (psych.time + 0.5) * (1.0/3.0)) + sin(phase + psych.time * (1.0/11.0));
 
 		MFVector[4] vp;
 		vp[0] = pos + corners[0] * psych.prestige;
@@ -90,14 +92,14 @@ class ThrobbingRobot : ISheeple, IEntity, IRenderable, ICollider
 		vp[2] = pos + corners[2] * psych.prestige;
 		vp[3] = pos + corners[3] * psych.prestige;
 
-		vp[0].x += psych.wonkey * sin(psych.time * 0.97);
-		vp[0].y += psych.wonkey * sin(psych.time * 0.86);
-		vp[1].x += psych.wonkey * sin(psych.time * 0.78);
-		vp[1].y += psych.wonkey * sin(psych.time * 0.58);
-		vp[2].x += psych.wonkey * sin(psych.time * 0.93);
-		vp[2].y += psych.wonkey * sin(psych.time * 0.77);
-		vp[3].x += psych.wonkey * sin(psych.time * 0.69);
-		vp[3].y += psych.wonkey * sin(psych.time * 1.17);
+		vp[0].x += psych.wonkey * sin(phase + psych.time * 0.97);
+		vp[0].y += psych.wonkey * sin(phase + psych.time * 0.86);
+		vp[1].x += psych.wonkey * sin(phase + psych.time * 0.78);
+		vp[1].y += psych.wonkey * sin(phase + psych.time * 0.58);
+		vp[2].x += psych.wonkey * sin(phase + psych.time * 0.93);
+		vp[2].y += psych.wonkey * sin(phase + psych.time * 0.77);
+		vp[3].x += psych.wonkey * sin(phase + psych.time * 0.69);
+		vp[3].y += psych.wonkey * sin(phase + psych.time * 1.17);
 
 		MFVector _min = min(min(vp[0], vp[1]), min(vp[2], vp[3]));
 		MFVector _max = max(max(vp[0], vp[1]), max(vp[2], vp[3]));
@@ -111,7 +113,7 @@ class ThrobbingRobot : ISheeple, IEntity, IRenderable, ICollider
 		uv[2] = (vp[2] - _min) / mag;
 		uv[3] = (vp[3] - _min) / mag;
 
-		float rot = psych.spin * sin(psych.time);
+		float rot = psych.spin * sin(phase + psych.time);
 		MFMatrix rm;
 		rm.x = MFVector(cos(rot), sin(rot), 0, 0);
 		rm.y = MFVector(-sin(rot), cos(rot), 0, 0);
@@ -172,8 +174,8 @@ class ThrobbingRobot : ISheeple, IEntity, IRenderable, ICollider
 		{
 			// receive abilities!
 			psych.toxicity += carrying.config.toxicity;
-			psych.wonkey += 20;
-			psych.sway += 20;
+			psych.wonkey += 0.1;
+			psych.sway += 0.5;
 			psych.spin += 0.05;
 
 			carrying.beingCarried = false;

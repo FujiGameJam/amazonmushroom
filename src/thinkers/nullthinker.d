@@ -8,5 +8,6 @@ class NullThinker : IThinker
 	override void OnThink() { }
 
 	override @property bool Valid() { return false; }
+	override @property ISheeple Sheeple() { return null; }
 }
 

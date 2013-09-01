@@ -35,6 +35,7 @@ import std.string;
 import std.conv;
 import std.random;
 import std.container;
+import std.algorithm;
 
 class InGameState : IState, IRenderable
 {
@@ -149,13 +150,6 @@ class InGameState : IState, IRenderable
 		updateEvent();
 		collision.OnUpdate();
 		postUpdateEvent();
-
-		//while (!entitiesToRemove.empty())
-		//{
-		//    auto x = entitiesToRemove.back();
-		//    entitiesToRemove.removeBack();
-		//    delete x;
-		//}
 	}
 
 	@property StateMachine Owner() { return owner; }
@@ -283,7 +277,7 @@ class InGameState : IState, IRenderable
 			}
 			if (cast(ThrobbingRobot) entity !is null)
 			{
-//				AddThrobbingRobot(cast(ThrobbingRobot) entity);
+				RemoveThrobbingRobot(cast(ThrobbingRobot) entity);
 			}
 			if (cast(Mushroom) entity !is null)
 			{
@@ -294,8 +288,6 @@ class InGameState : IState, IRenderable
 				RemoveCollider(cast(ICollider) entity);
 			}
 		}
-
-		entitiesToRemove ~= entity;
 	}
 
 	void AddEntity(IEntity entity)
@@ -308,8 +300,6 @@ class InGameState : IState, IRenderable
 			updateEvent.subscribe(&entity.OnUpdate);
 			postUpdateEvent.subscribe(&entity.OnPostUpdate);
 		}
-
-		entities[entity.Name] = entity;
 	}
 
 	void RemoveEntity(IEntity entity)
@@ -322,8 +312,6 @@ class InGameState : IState, IRenderable
 			updateEvent.unsubscribe(&entity.OnUpdate);
 			postUpdateEvent.unsubscribe(&entity.OnPostUpdate);
 		}
-
-		entities[entity.Name] = null;
 	}
 
 	void AddRenderable(IRenderable renderable)
@@ -368,13 +356,32 @@ class InGameState : IState, IRenderable
 		robots ~= robot;
 	}
 
-	//void RemoveThrobbingRobot(ThrobbingRobot robot)
-	//{
-	//    thinkEvent.unsubscribe(&thinker.OnThink);
-	//
-	//    thinkers ~= thinker;
-	//    robots ~= robot;
-	//}
+	void RemoveThrobbingRobot(ThrobbingRobot robot)
+	{
+		IThinker thinker = null;
+
+		foreach(t; thinkers)
+		{
+			if (t.Sheeple == robot)
+			{
+				thinker = t;
+				break;
+			}
+		}
+
+		thinkEvent.unsubscribe(&thinker.OnThink);
+
+		{
+			int index = cast(int)countUntil(thinkers, thinker);
+			if (index != -1)
+				remove(thinkers, index);
+		}
+		{
+			int index = cast(int)countUntil(robots, robot);
+			if (index != -1)
+				remove(robots, index);
+		}
+	}
 
 	void AddMushroom(Mushroom mushroom)
 	{
@@ -383,14 +390,9 @@ class InGameState : IState, IRenderable
 
 	void RemoveMushroom(Mushroom mushroom)
 	{
-		foreach(i, m; mushrooms)
-		{
-			if (m is mushroom)
-			{
-				mushrooms = mushrooms[0..i] ~ mushrooms[i+1..$];
-				break;
-			}
-		}
+		int index = cast(int)countUntil(mushrooms, mushroom);
+		if (index != -1)
+			remove(mushrooms, index);
 	}
 
 	void AddCollider(ICollider collider)
@@ -402,14 +404,11 @@ class InGameState : IState, IRenderable
 
 	void RemoveCollider(ICollider collider)
 	{
-		foreach(i, c; colliders)
-		{
-			if(c is collider)
-			{
-				colliders = colliders[0..i] ~ colliders[i+1..$];
-				break;
-			}
-		}
+		int index = cast(int)countUntil(colliders, collider);
+		if (index != -1)
+			remove(colliders, index);
+
+		collision.RemoveCollider(collider);
 	}
 
 
@@ -429,11 +428,41 @@ class InGameState : IState, IRenderable
 				}
 				else
 				{
-					float distSqr = lengthSq(m.CollisionPosition(), pos);
+					float distSqr = distanceSq(m.CollisionPosition(), pos);
 					if (distSqr < closestDistSqr)
 					{
 						closestDistSqr = distSqr;
 						closest = m;
+					}
+				}
+			}
+		}
+
+		return closest;
+	}
+
+
+	ThrobbingRobot GetClosestRobot(ThrobbingRobot robot)
+	{
+		ThrobbingRobot closest = null;
+
+		float closestDistSqr = float.max;
+
+		foreach(r; robots)
+		{
+			if (r != robot)
+			{
+				if (closest is null)
+				{
+					closest = r;
+				}
+				else
+				{
+					float distSqr = distanceSq(r.CollisionPosition(), robot.CollisionPosition());
+					if (distSqr < closestDistSqr)
+					{
+						closestDistSqr = distSqr;
+						closest = r;
 					}
 				}
 			}
@@ -459,12 +488,9 @@ class InGameState : IState, IRenderable
 	private VoidEvent roundBeginEvent;
 	private VoidEvent roundEndEvent;
 
-	private IEntity[string] entities;
 	private IThinker[] thinkers;
 	private ICollider[] colliders;
 	private ThrobbingRobot[] robots;
 	private Mushroom[] mushrooms;
 	private Arena arena;
-
-	private Array!IEntity entitiesToRemove;
 }
