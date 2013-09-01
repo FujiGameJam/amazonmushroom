@@ -385,6 +385,9 @@
    <File path="src\entity\mushroom.d" />
    <File path="src\entity\throbbingrobot.d" />
   </Folder>
+  <Folder name="managers">
+   <File path="src\managers\sound.d" />
+  </Folder>
   <Folder name="fuji">
    <Folder name="asset">
     <File path="..\fuji\dist\include\d2\fuji\asset\intmodel.d" />
