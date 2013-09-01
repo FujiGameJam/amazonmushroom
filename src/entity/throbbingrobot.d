@@ -10,6 +10,7 @@ import interfaces.collider;
 import camera.camera;
 
 import fuji.model;
+import fuji.animation;
 import fuji.render;
 import fuji.view;
 import fuji.system;
@@ -28,6 +29,21 @@ import std.math;
 
 class ThrobbingRobot : ISheeple, IEntity, IRenderable, ICollider
 {
+	struct Psych
+	{
+		float toxicity = 0;
+		@property int Level() { return cast(int)toxicity; }
+
+		float time = 0;
+		float tempo = 0;
+		float prestige = 1;
+		float spin = 0;
+		float sway = 0;
+		float sheer = 0;
+		float warp = 0;
+		float wonkey = 0;
+	}
+
 	struct ObjectState
 	{
 		MFMatrix		transform		= MFMatrix.identity;
@@ -50,24 +66,9 @@ class ThrobbingRobot : ISheeple, IEntity, IRenderable, ICollider
 
 	private string				name;
 
-	struct Psych
-	{
-		float time = 0;
-		float tempo = 1;
-		float prestige = 1;
-		float spin = 0;
-		float sway = 0;
-		float sheer = 0;
-		float warp = 0;
-		float wonkey = 0;
-	}
-
 	Psych psych;
 
-	struct Toxicity
-	{
-		
-	}
+	Mushroom					carrying = null;
 
 	void RenderViewport(size_t i)
 	{
@@ -155,13 +156,33 @@ class ThrobbingRobot : ISheeple, IEntity, IRenderable, ICollider
 		moveDirection = direction;
 	}
 
+	override void OnThrow()
+	{
+		if(carrying !is null)
+		{
+			carrying.SetPos(currentState.transform.t + facingDirection*5);
+			carrying.beingCarried = false;
+			carrying = null;
+		}
+	}
+
+	override void OnIngest()
+	{
+		if(carrying !is null)
+		{
+			// receive abilities!
+
+			InGameState.Instance.DestroyEntity(carrying);
+		}
+	}
+
 	override @property bool CanMove()		{ return true; }
 	override @property bool IsRunning()		{ return (currentState.activeMoves & ISheeple.Moves.Run) != 0; }
 
 	///IEntity
 	override void OnCreate(ElementParser element)
 	{
-		pModel = MFModel_Create("astro");
+		pModel = MFModel_CreateWithAnimation("acidbot.x".ptr);
 
 		initialState.transform.t.x = uniform(0.0, 8.0);
 		initialState.transform.t.z = uniform(0.0, 8.0);
@@ -191,6 +212,25 @@ class ThrobbingRobot : ISheeple, IEntity, IRenderable, ICollider
 
 		currentState.prevTransform = currentState.transform;
 		currentState.transform.t += (moveDirection * MovementSpeedThisFrame);
+
+		// advance the animation
+		MFAnimation *pAnim = MFModel_GetAnimation(pModel);
+		if(pAnim)
+		{
+			float start, end;
+			MFAnimation_GetFrameRange(pAnim, &start, &end);
+
+			static float time = 0;
+			time += MFSystem_GetTimeDelta();// * 500;
+			while(time >= end)
+				time -= end;
+			MFAnimation_SetFrame(pAnim, time);
+		}
+
+//		psych.toxicity;
+
+		if(carrying)
+			carrying.SetPos(currentState.transform.t + MFVector(0, 2, 0, 0));
 	}
 
 	// Need to resolve post-movement collisions, such as punching someone? Here's the place to do it.
@@ -199,9 +239,9 @@ class ThrobbingRobot : ISheeple, IEntity, IRenderable, ICollider
 		UpdateCamera();
 
 		MFMatrix modelTransform = MFMatrix.identity;
-		modelTransform.x = facingDirection * ModelScale;
+		modelTransform.x = facingDirection.cross3(MFVector.up) * ModelScale;
 		modelTransform.y *= ModelScale;
-		modelTransform.z = facingDirection.cross3(MFVector.up) * ModelScale;
+		modelTransform.z = -facingDirection * ModelScale;
 		modelTransform.t = currentState.transform.t + modelOffset;
 
 		MFModel_SetWorldMatrix(pModel, modelTransform);
@@ -236,12 +276,17 @@ class ThrobbingRobot : ISheeple, IEntity, IRenderable, ICollider
 		switch (other.CollisionClassEnum())
 		{
 		case CollisionClass.Mushroom:
+		{
+			auto mush = cast(Mushroom)other;
+			if(!carrying && !mush.beingCarried)
 			{
-				auto mush = cast(Mushroom)other;
-				psych.wonkey += mush.GetConfig.toxicity;
-				InGameState.Instance.DestroyEntity(mush);
+				carrying = mush;
+				mush.beingCarried = true;
+//				psych.toxicity += mush.GetConfig.toxicity;
+//				InGameState.Instance.DestroyEntity(mush);
 			}
 			return false;
+		}
 		//case CollisionClass.Obstacle:
 		//    break;
 		//case CollisionClass.Robot:
@@ -265,7 +310,7 @@ class ThrobbingRobot : ISheeple, IEntity, IRenderable, ICollider
 	{
 		MFMatrix transform;
 
-		transform.t = currentState.transform.t + MFVector(0, 5.0, -5.0);
+		transform.t = currentState.transform.t + MFVector(0, 12.0, -8.0);
 
 		transform.z = normalise( currentState.transform.t - transform.t );
 		transform.x = cross3( MFVector(0, 1, 0), transform.z );
@@ -279,5 +324,5 @@ class ThrobbingRobot : ISheeple, IEntity, IRenderable, ICollider
 	enum WalkSpeed = 4.0;
 	enum RunSpeed = 11.0;
 
-	enum ModelScale = 1.0 / 20.0; // To convert the model to meters, and then halve it
+	enum ModelScale = 1.0 / 1.0; // To convert the model to meters, and then halve it
 }

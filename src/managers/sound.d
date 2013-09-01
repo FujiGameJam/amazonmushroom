@@ -6,14 +6,8 @@ import config;
 
 class SoundManager
 {
-	Config.GlobalSounds globalConfig;;
-	Config.PlayerSounds[] playersConfig;
-
-	this()
-	{
-		globalConfig = Config.globalSounds;
-		playersConfig = Config.playerSounds;
-	}
+	enum globalConfig = Config.globalSounds;
+	enum playersConfig = Config.playerSounds;
 
 	void OnUpdate()
 	{

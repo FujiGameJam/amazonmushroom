@@ -40,23 +40,23 @@ struct Config
 		string win;
 	}
 
-	static Mushroom[] mushroomType = [
-		{ modelName: "mushroom.x", type: MushroomType.Plain, toxicity: 1, },
-		{ modelName: "cockshroom.x", type: MushroomType.Plain, toxicity: 10, },
-		{ modelName: "skullshroom.x", type: MushroomType.Plain, toxicity: 50, },
-		{ modelName: "monkeyshroom.x", type: MushroomType.Plain, toxicity: 100, },
-		//{ modelName: "cockshroom.x", type: MushroomType.Plain, toxicity: 10, },
+	enum Mushroom[] mushroomType = [
+		{ modelName: "mushroom.x", type: MushroomType.Plain, toxicity: 0.1, },
+		{ modelName: "cockshroom.x", type: MushroomType.Plain, toxicity: 0.2, },
+		{ modelName: "skullshroom.x", type: MushroomType.Plain, toxicity: 0.3, },
+		{ modelName: "monkeyshroom.x", type: MushroomType.Plain, toxicity: 0.5, },
+		{ modelName: "horseshroom.x", type: MushroomType.Plain, toxicity: 1, },
+		{ modelName: "palehorseshroom.x", type: MushroomType.Plain, toxicity: 0.2, },
 	];
 
-
-	static Robot[] robotType = [
-		{ modelName: "mushroom.x", nationality: "fin", },
-		{ modelName: "mushroom.x", nationality: "mex", },
-		{ modelName: "mushroom.x", nationality: "rus", },
-		{ modelName: "mushroom.x", nationality: "sic", },
+	enum Robot[] robotType = [
+		{ modelName: "acidbot.x", nationality: "fin", },
+		{ modelName: "acidbot.x", nationality: "mex", },
+		{ modelName: "acidbot.x", nationality: "rus", },
+		{ modelName: "acidbot.x", nationality: "sic", },
 	];
 
-	static GlobalSounds globalSounds = {
+	enum GlobalSounds globalSounds = {
 		begin: "begin.ogg",
 		denied: "denied.ogg",
 		domination: "domination.ogg",
@@ -67,7 +67,7 @@ struct Config
 		spree: "trip_spree.ogg",
 	};
 
-	static PlayerSounds[4] playerSounds = [
+	enum PlayerSounds[4] playerSounds = [
 		{
 			nationality: "fin",
 			snormal: [ "fin1.ogg", "fin2.ogg", "fin3.ogg", "fin4.ogg", "fin5.ogg", ],

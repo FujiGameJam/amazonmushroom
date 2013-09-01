@@ -41,6 +41,8 @@ class Mushroom : IEntity, IRenderable, ICollider
 
 	private string				name = "mushroom";
 
+	bool						beingCarried = false;
+
 	this()
 	{
 		facingDirection = MFVector(0,0,1,0);
@@ -155,5 +157,5 @@ class Mushroom : IEntity, IRenderable, ICollider
 	enum WalkSpeed = 4.0;
 	enum RunSpeed = 11.0;
 
-	enum ModelScale = 1.0 / 3.0; // To convert the model to meters, and then halve it
+	enum ModelScale = 1.0 / 1.0; // To convert the model to meters, and then halve it
 }

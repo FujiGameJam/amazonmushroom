@@ -11,6 +11,8 @@ interface ISheeple
 	}
 
 	void OnMove(MFVector direction);
+	void OnThrow();
+	void OnIngest();
 
 	@property bool CanMove();
 

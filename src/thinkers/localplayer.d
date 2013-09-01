@@ -117,9 +117,14 @@ class LocalPlayer : IThinker
 
 		}
 
-		if (moving)
+		if(moving)
 			sheeple.OnMove(direction);
 
+		if(MFInput_WasPressed(MFGamepadButton.PP_Cross, MFInputDevice.Gamepad, joypadDeviceID) > 0)
+			sheeple.OnThrow();
+
+		if(MFInput_WasPressed(MFGamepadButton.PP_Circle, MFInputDevice.Gamepad, joypadDeviceID) > 0)
+			sheeple.OnIngest();
 	}
 
 	@property bool Valid() { return PadValid || KeyboardValid; }

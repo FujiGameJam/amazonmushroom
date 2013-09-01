@@ -279,19 +279,19 @@ class InGameState : IState, IRenderable
 			}
 			if (cast(IRenderable) entity !is null)
 			{
-				AddRenderable(cast(IRenderable) entity);
+				RemoveRenderable(cast(IRenderable) entity);
 			}
 			if (cast(ThrobbingRobot) entity !is null)
 			{
-				AddThrobbingRobot(cast(ThrobbingRobot) entity);
+//				AddThrobbingRobot(cast(ThrobbingRobot) entity);
 			}
 			if (cast(Mushroom) entity !is null)
 			{
-				AddMushroom(cast(Mushroom) entity);
+				RemoveMushroom(cast(Mushroom) entity);
 			}
 			if (cast(ICollider) entity !is null)
 			{
-				AddCollider(cast(ICollider) entity);
+				RemoveCollider(cast(ICollider) entity);
 			}
 		}
 
@@ -397,6 +397,18 @@ class InGameState : IState, IRenderable
 	{
 		colliders ~= collider;
 		collision.AddCollider(collider);
+	}
+
+	void RemoveCollider(ICollider collider)
+	{
+		foreach(i, c; colliders)
+		{
+			if(c is collider)
+			{
+				colliders = colliders[0..i] ~ colliders[i+1..$];
+				break;
+			}
+		}
 	}
 
 	private CollisionManager collision;
