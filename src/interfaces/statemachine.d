@@ -25,8 +25,16 @@ class StateMachine
 
 	~this()
 	{
+		assert(currState is null, "you forgot to shutdown the statemachine dude");
+	}
+
+	void Shutdown()
+	{
 		if (currState !is null)
-			currState.OnExit();
+		  currState.OnExit();
+
+		currState = null;
+		nextState = null;
 	}
 
 	void AddState(string name, IState state)

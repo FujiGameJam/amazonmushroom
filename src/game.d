@@ -68,6 +68,7 @@ class Game
 
 	void Deinit()
 	{
+		state.Shutdown();
 //		MFRenderer_Destroy(pRenderer);
 	}
 
