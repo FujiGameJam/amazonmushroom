@@ -2,10 +2,15 @@ module thinkers.autoplayer;
 
 import std.random;
 
+import entity.mushroom;
+
 import interfaces.thinker;
+import interfaces.collider;
 
 import fuji.vector;
 import fuji.input;
+
+import states.ingamestate;
 
 class AutoPlayer : IThinker
 {
@@ -26,16 +31,33 @@ class AutoPlayer : IThinker
 
 	override void OnThink()
 	{
-		bool	moving = false;
+		bool moving = false;
 
 		if (sheeple.CanMove)
 		{
-			direction.x += uniform(-1.0, 1.0);
-			direction.z += uniform(-1.0, 1.0);
+			moving = false;
 
-			direction = direction.normalise();
+			ICollider collider = cast(ICollider)sheeple;
+			if (collider !is null)
+			{
+				Mushroom m = InGameState.Instance.GetClosestMushroom(collider.CollisionPosition());
 
-			moving = true;
+				direction = m.CollisionPosition() - collider.CollisionPosition();
+
+				direction = direction.normalise();
+
+				moving = true;
+			}
+
+			if (!moving)
+			{
+				direction.x += uniform(-0.2, 0.2);
+				direction.z += uniform(-0.2, 0.2);
+
+				direction = direction.normalise();
+
+				moving = true;
+			}
 		}
 
 		if (moving)

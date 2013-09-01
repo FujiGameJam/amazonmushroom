@@ -32,7 +32,7 @@ class LoadingScreenState : IState, IRenderable
 
 		elapsedTime = 0;
 
-		MFSound_Play(dattMamon, 0);
+		//MFSound_Play(dattMamon, 0);
 	}
 
 	void OnExit()
@@ -117,6 +117,6 @@ private:
 
 	float halfMessageWidth;
 
-	const(char*) message = "Powered by MATT DAMON!";
-	const(float) messageHeight = 45;
+	static const(char*) message = "Powered by MATT DAMON!";
+	static const(float) messageHeight = 45;
 }

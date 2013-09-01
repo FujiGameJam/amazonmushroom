@@ -29,7 +29,7 @@ class LocalPlayer : IThinker
 		Block,
 	}
 
-	immutable MFKey[KeyMoves.max + 1][4] playerKeyboardMappings =
+	static immutable MFKey[KeyMoves.max + 1][4] playerKeyboardMappings =
 	[
 		[ MFKey.W, MFKey.S, MFKey.A, MFKey.D, MFKey.G, MFKey.H, MFKey.J, MFKey.Y ],
 		[ MFKey.Up, MFKey.Down, MFKey.Left, MFKey.Right, MFKey.NumPad4, MFKey.NumPad5, MFKey.NumPad6, MFKey.NumPad8 ],
@@ -37,7 +37,7 @@ class LocalPlayer : IThinker
 		[ MFKey.None, MFKey.None, MFKey.None, MFKey.None, MFKey.None, MFKey.None, MFKey.None, MFKey.None ]
 	];
 
-	bool OnAssign(ISheeple sheepWantsToFollow)
+	override bool OnAssign(ISheeple sheepWantsToFollow)
 	{
 		if (padsClaimed[playerIndex] is null && MFInput_IsReady(MFInputDevice.Gamepad, playerIndex))
 		{
@@ -78,7 +78,7 @@ class LocalPlayer : IThinker
 		return Valid;
 	}
 
-	void OnThink()
+	override void OnThink()
 	{
 		bool	moving = false;
 
@@ -127,7 +127,7 @@ class LocalPlayer : IThinker
 			sheeple.OnIngest();
 	}
 
-	@property bool Valid() { return PadValid || KeyboardValid; }
+	override @property bool Valid() { return PadValid || KeyboardValid; }
 
 	@property bool PadValid() { return joypadDeviceID != -1; }
 	@property bool KeyboardValid() { return keyboardDeviceID != -1; }

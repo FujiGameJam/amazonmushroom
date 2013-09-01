@@ -211,7 +211,7 @@
   <isSolaris>0</isSolaris>
   <scheduler>0</scheduler>
   <useDeprecated>0</useDeprecated>
-  <errDeprecated>0</errDeprecated>
+  <errDeprecated>1</errDeprecated>
   <useAssert>0</useAssert>
   <useInvariants>0</useInvariants>
   <useIn>0</useIn>
@@ -223,9 +223,9 @@
   <useInline>0</useInline>
   <release>0</release>
   <preservePaths>0</preservePaths>
-  <warnings>0</warnings>
-  <infowarnings>0</infowarnings>
-  <checkProperty>0</checkProperty>
+  <warnings>1</warnings>
+  <infowarnings>1</infowarnings>
+  <checkProperty>1</checkProperty>
   <genStackFrame>0</genStackFrame>
   <pic>0</pic>
   <cov>0</cov>
@@ -385,9 +385,6 @@
    <File path="src\entity\mushroom.d" />
    <File path="src\entity\throbbingrobot.d" />
   </Folder>
-  <Folder name="managers">
-   <File path="src\managers\sound.d" />
-  </Folder>
   <Folder name="fuji">
    <Folder name="asset">
     <File path="..\fuji\dist\include\d2\fuji\asset\intmodel.d" />
@@ -449,6 +446,9 @@
    <File path="src\interfaces\renderable.d" />
    <File path="src\interfaces\statemachine.d" />
    <File path="src\interfaces\thinker.d" />
+  </Folder>
+  <Folder name="managers">
+   <File path="src\managers\sound.d" />
   </Folder>
   <Folder name="states">
    <File path="src\states\ingamestate.d" />

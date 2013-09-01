@@ -14,7 +14,7 @@ class Renderer
 
 		MFRenderLayerDescription[] l = new MFRenderLayerDescription[layers.length];
 		foreach(i; 0..layers.length)
-			l[i].pName = layers[i].toStringz;
+			l[i].pName = layers[i].toStringz();
 
 		pRenderer = MFRenderer_Create(l.ptr, cast(int)l.length, null, null);
 		MFRenderer_SetCurrent(pRenderer);

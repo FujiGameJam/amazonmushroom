@@ -71,7 +71,7 @@ class Mushroom : IEntity, IRenderable, ICollider
 	{
 		config = conf;
 		MFModel_Destroy(pModel);
-		pModel = MFModel_Create(config.modelName.toStringz);
+		pModel = MFModel_Create(config.modelName.toStringz());
 	}
 
 	override void OnResolve(IEntity[string] loadedEntities)

@@ -67,7 +67,7 @@ class InGameState : IState, IRenderable
 		for (int i = 0; i <= numMushrooms; i++)
 		{
 			MFVector pos = getEmptyLocation();
-			if ((pos - MFVector(0,0,0,1)).mag3 < 0.01)  // if it's essentially the same vector, ie: the getEmptyLocation failed
+			if ((pos - MFVector(0,0,0,1)).mag3() < 0.01)  // if it's essentially the same vector, ie: the getEmptyLocation failed
 			{
 				continue; // don't spawn
 			}
@@ -107,7 +107,7 @@ class InGameState : IState, IRenderable
 			// check against mushroom positions
 			foreach (i, mushroom; mushrooms)
 			{
-				auto temp = (retvect - mushroom.CollisionPosition).mag3;
+				auto temp = (retvect - mushroom.CollisionPosition).mag3();
 				if (temp < spacing)
 				{
 					success = false;
@@ -120,7 +120,7 @@ class InGameState : IState, IRenderable
 			{
 				foreach (i, robot; robots)
 				{
-					auto temp = (retvect - robot.CollisionPosition).mag3;
+					auto temp = (retvect - robot.CollisionPosition).mag3();
 					if (temp < spacing)
 					{
 						success = false;
@@ -399,6 +399,7 @@ class InGameState : IState, IRenderable
 		collision.AddCollider(collider);
 	}
 
+
 	void RemoveCollider(ICollider collider)
 	{
 		foreach(i, c; colliders)
@@ -410,6 +411,34 @@ class InGameState : IState, IRenderable
 			}
 		}
 	}
+
+
+	Mushroom GetClosestMushroom(MFVector pos)
+	{
+		Mushroom closest = null;
+
+		float closestDistSqr = float.max;
+
+		foreach(m; mushrooms)
+		{
+			if (closest is null)
+			{
+				closest = m;
+			}
+			else
+			{
+				float distSqr = lengthSq(m.CollisionPosition(), pos);
+				if (distSqr < closestDistSqr)
+				{
+					closestDistSqr = distSqr;
+					closest = m;
+				}
+			}
+		}
+
+		return closest;
+	}
+
 
 	private CollisionManager collision;
 
