@@ -421,17 +421,20 @@ class InGameState : IState, IRenderable
 
 		foreach(m; mushrooms)
 		{
-			if (closest is null)
+			if (!m.beingCarried)
 			{
-				closest = m;
-			}
-			else
-			{
-				float distSqr = lengthSq(m.CollisionPosition(), pos);
-				if (distSqr < closestDistSqr)
+				if (closest is null)
 				{
-					closestDistSqr = distSqr;
 					closest = m;
+				}
+				else
+				{
+					float distSqr = lengthSq(m.CollisionPosition(), pos);
+					if (distSqr < closestDistSqr)
+					{
+						closestDistSqr = distSqr;
+						closest = m;
+					}
 				}
 			}
 		}

@@ -43,6 +43,7 @@ class AutoPlayer : IThinker
 				Mushroom m = InGameState.Instance.GetClosestMushroom(collider.CollisionPosition());
 
 				direction = m.CollisionPosition() - collider.CollisionPosition();
+				direction.y = 0;
 
 				direction = direction.normalise();
 
@@ -53,6 +54,7 @@ class AutoPlayer : IThinker
 			{
 				direction.x += uniform(-0.2, 0.2);
 				direction.z += uniform(-0.2, 0.2);
+				direction.y = 0;
 
 				direction = direction.normalise();
 
