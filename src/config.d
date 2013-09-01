@@ -22,6 +22,7 @@ struct Config
 
 	struct GlobalSounds
 	{
+		string begin;
 		string denied;
 		string domination;
 		string firstShroom;
@@ -69,26 +70,26 @@ struct Config
 	static PlayerSounds[4] playerSounds = [
 		{
 			nationality: "fin",
-			snormal: { "fin1.ogg", "fin2.ogg", "fin3.ogg", "fin4.ogg", "fin5.ogg", },
-			snew: { "fin1.ogg", "fin2.ogg", "fin3.ogg", "fin4.ogg", "fin5.ogg", },
+			snormal: [ "fin1.ogg", "fin2.ogg", "fin3.ogg", "fin4.ogg", "fin5.ogg", ],
+			snew: [ "fin1.ogg", "fin2.ogg", "fin3.ogg", "fin4.ogg", "fin5.ogg", ],
 			win: "fin_wins.ogg",
 		},
 			{
 			nationality: "mex",
-			snormal: { "mex1.ogg", "mex2.ogg", "mex3.ogg", "mex4.ogg", "mex5.ogg", },
-			snew: { "mex1.ogg", "mex2.ogg", "mex3.ogg", "mex4.ogg", "mex5.ogg", },
+			snormal: [ "mex1.ogg", "mex2.ogg", "mex3.ogg", "mex4.ogg", "mex5.ogg", ],
+			snew: [ "mex1.ogg", "mex2.ogg", "mex3.ogg", "mex4.ogg", "mex5.ogg", ],
 			win: "mex_wins.ogg",
 		},
 			{
 			nationality: "rus",
-			snormal: { "rus1.ogg", "rus2.ogg", "rus3.ogg", "rus4.ogg", "rus5.ogg", },
-			snew: { "rus1.ogg", "rus2.ogg", "rus3.ogg", "rus4.ogg", "rus5.ogg", },
+			snormal: [ "rus1.ogg", "rus2.ogg", "rus3.ogg", "rus4.ogg", "rus5.ogg", ],
+			snew: [ "rus1.ogg", "rus2.ogg", "rus3.ogg", "rus4.ogg", "rus5.ogg", ],
 			win: "rus_wins.ogg",
 		},
 			{
 			nationality: "sic",
-			snormal: { "sic1.ogg", "sic2.ogg", "sic3.ogg", "sic4.ogg", "sic5.ogg", },
-			snew: { "sic1.ogg", "sic2.ogg", "sic3.ogg", "sic4.ogg", "sic5.ogg", },
+			snormal: [ "sic1.ogg", "sic2.ogg", "sic3.ogg", "sic4.ogg", "sic5.ogg", ],
+			snew: [ "sic1.ogg", "sic2.ogg", "sic3.ogg", "sic4.ogg", "sic5.ogg", ],
 			win: "sic_wins.ogg",
 		},
 	];

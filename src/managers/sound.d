@@ -1,11 +1,19 @@
 module managers.sound;
 
+import fuji.sound;
+
 import config;
 
 class SoundManager
 {
-	Config.GlobalSounds globalConfig = Config.globalSounds;
-	Config.PlayerSounds playersConfig = Config.playerSounds;
+	Config.GlobalSounds globalConfig;;
+	Config.PlayerSounds[] playersConfig;
+
+	this()
+	{
+		globalConfig = Config.globalSounds;
+		playersConfig = Config.playerSounds;
+	}
 
 	void OnUpdate()
 	{
