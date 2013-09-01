@@ -37,7 +37,7 @@ class Mushroom : IEntity, IRenderable, ICollider
 
 	private MFModel*			pModel;
 
-	private Config.Mushroom		config;
+	Config.Mushroom				config;
 
 	private string				name = "mushroom";
 

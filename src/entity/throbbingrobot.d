@@ -35,7 +35,7 @@ class ThrobbingRobot : ISheeple, IEntity, IRenderable, ICollider
 		@property int Level() { return cast(int)toxicity; }
 
 		float time = 0;
-		float tempo = 0;
+		float tempo = 1;
 		float prestige = 1;
 		float spin = 0;
 		float sway = 0;
@@ -171,8 +171,14 @@ class ThrobbingRobot : ISheeple, IEntity, IRenderable, ICollider
 		if(carrying !is null)
 		{
 			// receive abilities!
+			psych.toxicity += carrying.config.toxicity;
+			psych.wonkey += 20;
+			psych.sway += 20;
+			psych.spin += 0.05;
 
+			carrying.beingCarried = false;
 			InGameState.Instance.DestroyEntity(carrying);
+			carrying = null;
 		}
 	}
 
