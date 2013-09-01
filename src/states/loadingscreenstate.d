@@ -32,7 +32,7 @@ class LoadingScreenState : IState, IRenderable
 
 		elapsedTime = 0;
 
-		//MFSound_Play(dattMamon, 0);
+		MFSound_Play(dattMamon, 0);
 	}
 
 	void OnExit()
@@ -50,7 +50,7 @@ class LoadingScreenState : IState, IRenderable
 	{
 		elapsedTime += MFSystem_GetTimeDelta();
 
-		if (elapsedTime > 2.2)
+		if (elapsedTime > 0.5)
 		{
 			owner.SwitchState("InGame");
 		}
