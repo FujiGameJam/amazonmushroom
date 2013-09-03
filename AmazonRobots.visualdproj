@@ -462,6 +462,7 @@
   <Folder name="util">
    <File path="src\util\event.d" />
    <File path="src\util\eventtypes.d" />
+   <File path="src\util\math.d" />
   </Folder>
   <File path="src\config.d" />
   <File path="src\game.d" />
