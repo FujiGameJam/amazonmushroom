@@ -33,11 +33,10 @@ class AutoPlayer : IThinker
 	override void OnThink()
 	{
 		bool moving = false;
+		direction = MFVector.zero;
 
 		if (sheeple.CanMove)
 		{
-			moving = false;
-
 			ThrobbingRobot robot = cast(ThrobbingRobot)sheeple;
 
 			if (robot !is null)
@@ -45,16 +44,18 @@ class AutoPlayer : IThinker
 				if (robot.carrying is null)
 				{
 					Mushroom m = InGameState.Instance.GetClosestMushroom(robot.CollisionPosition());
+					if (m !is null)
+					{
+						direction = m.CollisionPosition() - robot.CollisionPosition();
+						direction.y = 0;
+						direction = direction.normalise();
 
-					direction = m.CollisionPosition() - robot.CollisionPosition();
-					direction.y = 0;
-					direction = direction.normalise();
+						moving = true;
+					}
 				}
 				else
 				{
 					robot.OnIngest();
-
-					direction = MFVector.init;
 				}
 				//else
 				//{
@@ -62,7 +63,6 @@ class AutoPlayer : IThinker
 				//    direction = enemy.CollisionPosition() - robot.CollisionPosition();
 				//}
 
-				moving = true;
 			}
 
 			if (!moving)

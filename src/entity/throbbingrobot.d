@@ -27,22 +27,42 @@ import std.random;
 import std.conv;
 import std.math;
 
+import util.math;
+
+struct Psych
+{
+	private float toxicity = 0;
+	private float time = 0;
+	private float tempo = 1;
+	private float prestige = 1;
+	private float spin = 0;
+	private float sway = 0;
+	private float sheer = 0;
+	private float warp = 0;
+	private float wonkey = 0;
+
+public:
+	@property float Toxicity() { return toxicity; }
+	@property float Time() { return time; }
+	@property float Tempo() { return Tempo; }
+	@property float Prestige() { return prestige; }
+	@property float Spin() { return spin; }
+	@property float Sway() { return sway; }
+	@property float Sheer() { return sheer; }
+	@property float Warp() { return warp; }
+	@property float Wonkey() { return wonkey; }
+
+	@property int Level() { return cast(int)toxicity; }
+
+	@property void Toxicity(float v) { toxicity = util.math.clamp(v, 0.0f, 1.0f); }
+	@property void Time(float v) { time = util.math.clamp(v, 0.0f, float.max); }
+	@property void Wonkey(float v) { wonkey = util.math.clamp(v, 0.0f, 1.0f); }
+	@property void Sway(float v) { sway = util.math.clamp(v, 0.0f, 1.0f); }
+	@property void Spin(float v) { spin = util.math.clamp(v, 0.0f, 1.0f); }
+}
+
 class ThrobbingRobot : ISheeple, IEntity, IRenderable, ICollider
 {
-	struct Psych
-	{
-		float toxicity = 0;
-		@property int Level() { return cast(int)toxicity; }
-
-		float time = 0;
-		float tempo = 1;
-		float prestige = 1;
-		float spin = 0;
-		float sway = 0;
-		float sheer = 0;
-		float warp = 0;
-		float wonkey = 0;
-	}
 
 	struct ObjectState
 	{
@@ -80,26 +100,29 @@ class ThrobbingRobot : ISheeple, IEntity, IRenderable, ICollider
 			MFVector(320, 180, 0, 0)
 		];
 
-		float phase = (i * 2) * (3.14 / 2 / 5);
+		const float phase = i * 2.84;
+		float time = psych.Time + phase;
 
-		MFVector pos = corners[i] / psych.prestige;
-		pos.x += psych.sway * sin(phase + psych.time) + sin(psych.time * (1.0/7.0));
-		pos.y += psych.sway * sin(phase + (psych.time + 0.5) * (1.0/3.0)) + sin(phase + psych.time * (1.0/11.0));
+		while (time > 10) { time -= 10; }
+
+		MFVector pos = corners[i] / psych.Prestige;
+		pos.x += psych.Sway * sin(time) + sin(time * (1.0/7.0));
+		pos.y += psych.Sway * sin((time + 0.5) * (1.0/3.0)) + sin(time * (1.0/11.0));
 
 		MFVector[4] vp;
-		vp[0] = pos + corners[0] * psych.prestige;
-		vp[1] = pos + corners[1] * psych.prestige;
-		vp[2] = pos + corners[2] * psych.prestige;
-		vp[3] = pos + corners[3] * psych.prestige;
+		vp[0] = pos + corners[0] * psych.Prestige;
+		vp[1] = pos + corners[1] * psych.Prestige;
+		vp[2] = pos + corners[2] * psych.Prestige;
+		vp[3] = pos + corners[3] * psych.Prestige;
 
-		vp[0].x += psych.wonkey * sin(phase + psych.time * 0.97);
-		vp[0].y += psych.wonkey * sin(phase + psych.time * 0.86);
-		vp[1].x += psych.wonkey * sin(phase + psych.time * 0.78);
-		vp[1].y += psych.wonkey * sin(phase + psych.time * 0.58);
-		vp[2].x += psych.wonkey * sin(phase + psych.time * 0.93);
-		vp[2].y += psych.wonkey * sin(phase + psych.time * 0.77);
-		vp[3].x += psych.wonkey * sin(phase + psych.time * 0.69);
-		vp[3].y += psych.wonkey * sin(phase + psych.time * 1.17);
+		vp[0].x += psych.Wonkey * sin(time * 0.97);
+		vp[0].y += psych.Wonkey * sin(time * 0.86);
+		vp[1].x += psych.Wonkey * sin(time * 0.78);
+		vp[1].y += psych.Wonkey * sin(time * 0.58);
+		vp[2].x += psych.Wonkey * sin(time * 0.93);
+		vp[2].y += psych.Wonkey * sin(time * 0.77);
+		vp[3].x += psych.Wonkey * sin(time * 0.69);
+		vp[3].y += psych.Wonkey * sin(time * 1.17);
 
 		MFVector _min = min(min(vp[0], vp[1]), min(vp[2], vp[3]));
 		MFVector _max = max(max(vp[0], vp[1]), max(vp[2], vp[3]));
@@ -113,7 +136,7 @@ class ThrobbingRobot : ISheeple, IEntity, IRenderable, ICollider
 		uv[2] = (vp[2] - _min) / mag;
 		uv[3] = (vp[3] - _min) / mag;
 
-		float rot = psych.spin * sin(phase + psych.time);
+		float rot = psych.Spin * sin(time);
 		MFMatrix rm;
 		rm.x = MFVector(cos(rot), sin(rot), 0, 0);
 		rm.y = MFVector(-sin(rot), cos(rot), 0, 0);
@@ -126,13 +149,13 @@ class ThrobbingRobot : ISheeple, IEntity, IRenderable, ICollider
 		MFPrimitive(PrimType.TriStrip, 0);
 		MFBegin(4);
 		MFSetTexCoord1(uv[0].x, uv[0].y*(0.5 - yOffset));
-		MFSetPosition(vp[0].x, vp[0].y, 0.5 + psych.prestige*0.3);
+		MFSetPosition(vp[0].x, vp[0].y, 0.5 + psych.Prestige*0.3);
 		MFSetTexCoord1(uv[1].x, uv[1].y*(0.5 - yOffset));
-		MFSetPosition(vp[1].x, vp[1].y, 0.5 + psych.prestige*0.3);
+		MFSetPosition(vp[1].x, vp[1].y, 0.5 + psych.Prestige*0.3);
 		MFSetTexCoord1(uv[2].x, uv[2].y*(0.5 + yOffset));
-		MFSetPosition(vp[2].x, vp[2].y, 0.5 + psych.prestige*0.3);
+		MFSetPosition(vp[2].x, vp[2].y, 0.5 + psych.Prestige*0.3);
 		MFSetTexCoord1(uv[3].x, uv[3].y*(0.5 + yOffset));
-		MFSetPosition(vp[3].x, vp[3].y, 0.5 + psych.prestige*0.3);
+		MFSetPosition(vp[3].x, vp[3].y, 0.5 + psych.Prestige*0.3);
 		MFEnd();
 
 		//MFPrimitive_DrawQuad((i&1) * width, (i>>1) * height, width, height);
@@ -173,10 +196,10 @@ class ThrobbingRobot : ISheeple, IEntity, IRenderable, ICollider
 		if(carrying !is null)
 		{
 			// receive abilities!
-			psych.toxicity += carrying.config.toxicity;
-			psych.wonkey += 0.1;
-			psych.sway += 0.5;
-			psych.spin += 0.05;
+			psych.Toxicity = psych.Toxicity + carrying.config.toxicity;
+			psych.Wonkey = psych.Wonkey + 0.1;
+			psych.Sway = psych.Sway + 0.5;
+			psych.Spin = psych.Spin + 0.05;
 
 			carrying.beingCarried = false;
 			InGameState.Instance.DestroyEntity(carrying);
@@ -194,6 +217,9 @@ class ThrobbingRobot : ISheeple, IEntity, IRenderable, ICollider
 
 		initialState.transform.t.x = uniform(0.0, 8.0);
 		initialState.transform.t.z = uniform(0.0, 8.0);
+
+		//initialState.transform.t.x = 0.1;
+		//initialState.transform.t.z = 0.1;
 	}
 
 	override void OnResolve(IEntity[string] loadedEntities)
@@ -216,7 +242,7 @@ class ThrobbingRobot : ISheeple, IEntity, IRenderable, ICollider
 	// Do movement and other type logic in this one
 	override void OnUpdate()
 	{
-		psych.time += MFSystem_GetTimeDelta() * psych.tempo;
+		psych.Time = psych.Time + MFSystem_GetTimeDelta() * psych.Tempo;
 
 		currentState.prevTransform = currentState.transform;
 		currentState.transform.t += (moveDirection * MovementSpeedThisFrame);
@@ -234,8 +260,6 @@ class ThrobbingRobot : ISheeple, IEntity, IRenderable, ICollider
 				time -= end;
 			MFAnimation_SetFrame(pAnim, time);
 		}
-
-//		psych.toxicity;
 
 		if(carrying)
 			carrying.SetPos(currentState.transform.t + MFVector(0, 2, 0, 0));
@@ -290,8 +314,6 @@ class ThrobbingRobot : ISheeple, IEntity, IRenderable, ICollider
 			{
 				carrying = mush;
 				mush.beingCarried = true;
-//				psych.toxicity += mush.GetConfig.toxicity;
-//				InGameState.Instance.DestroyEntity(mush);
 			}
 			return false;
 		}

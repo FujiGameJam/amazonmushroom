@@ -70,9 +70,6 @@ class Arena : IEntity, IRenderable
 	///IRenderable
 	override void OnRenderWorld()
 	{
-		auto min = MFVector(0, 0, 0);
-		auto max = bounds;
-
 		MFRenderer_AddModel(pModel, null, MFView_GetViewState());
 	}
 

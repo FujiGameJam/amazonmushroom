@@ -31,7 +31,7 @@ class Mushroom : IEntity, IRenderable, ICollider
 	private MFVector			facingDirection;
 
 	private ObjectState			currentState,
-		initialState;
+								initialState;
 
 	private CollisionManager	collision = null;
 

@@ -67,19 +67,25 @@ class InGameState : IState, IRenderable
 
 		for (int i = 0; i <= numMushrooms; i++)
 		{
-			MFVector pos = getEmptyLocation();
-			if ((pos - MFVector(0,0,0,1)).mag3() < 0.01)  // if it's essentially the same vector, ie: the getEmptyLocation failed
-			{
-				continue; // don't spawn
-			}
+			SpawnMushroom();
+		}
 
+		resetEvent();
+	}
+
+	void SpawnMushroom()
+	{
+		MFVector pos = getEmptyLocation();
+		if ((pos - MFVector(0,0,0,1)).mag3() < 0.01)  // if it's essentially the same vector, ie: the getEmptyLocation failed
+		{
+		}
+		else
+		{
 			auto newMushroom = CreateEntity!Mushroom();
 			newMushroom.SetInitialPos(pos);
 			auto index = uniform(0, Config.mushroomType.length);
 			newMushroom.SetConfig(Config.mushroomType[index]);
 		}
-
-		resetEvent();
 	}
 
 	MFVector getEmptyLocation()
@@ -332,6 +338,13 @@ class InGameState : IState, IRenderable
 
 	void AddThrobbingRobot(ThrobbingRobot robot)
 	{
+		MFVector pos;
+
+		//pos.x = uniform(0.0, Arena.bounds.x);
+		//pos.z = uniform(0.0, Arena.bounds.z);
+			
+		//robot.CollisionPosition = pos;
+
 		IThinker thinker;
 
 		//if (toLower(robot.Name[0 .. 6]) == "player")
@@ -397,17 +410,12 @@ class InGameState : IState, IRenderable
 
 	void AddCollider(ICollider collider)
 	{
-		colliders ~= collider;
 		collision.AddCollider(collider);
 	}
 
 
 	void RemoveCollider(ICollider collider)
 	{
-		int index = cast(int)countUntil(colliders, collider);
-		if (index != -1)
-			remove(colliders, index);
-
 		collision.RemoveCollider(collider);
 	}
 
@@ -489,7 +497,6 @@ class InGameState : IState, IRenderable
 	private VoidEvent roundEndEvent;
 
 	private IThinker[] thinkers;
-	private ICollider[] colliders;
 	private ThrobbingRobot[] robots;
 	private Mushroom[] mushrooms;
 	private Arena arena;
